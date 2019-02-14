@@ -1,14 +1,14 @@
+#!/usr/bin/env node
 let toolkitLoaded = false
-
 try {
-   const atk = require("./lib")
-   toolkitLoaded = true
+   const atk = require("../lib/atk")
+   const cmd = process.argv.slice(2)
+   console.log(cmd)
    switch (process.argv[2]) {
-      case "init" || "-i":
-         // console.log("open adomer-toolkit interface")
+      case "init": case "-i":
          atk.initializeCLIapp()
          break;
-      case "help" || "-h":
+      case "help": case "-h":
          console.log("open adomer-toolkit command list")
          break;
       default: 
@@ -17,4 +17,6 @@ try {
    }
 } catch (err) {
    console.log(err.stack)
+} finally {
+   toolkitLoaded = true
 }
