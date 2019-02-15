@@ -11,6 +11,7 @@
   },
   "keywords": [],
   "author": "Zach Rheaume",
+  "repository" : "https://github.com/zrheaume/adomer-toolkit",
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {}
