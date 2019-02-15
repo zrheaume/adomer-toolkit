@@ -1,6 +1,6 @@
 {
   "name": "adomer-toolkit",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Adomer configuration toolkit",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   },
   "keywords": [],
   "author": "Zach Rheaume",
-  "repository" : "https://github.com/zrheaume/adomer-toolkit",
+  "repository": "https://github.com/zrheaume/adomer-toolkit",
   "license": "ISC",
   "dependencies": {},
   "devDependencies": {}
