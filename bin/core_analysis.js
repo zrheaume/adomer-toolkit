@@ -8,7 +8,7 @@ const app_validator = require("../lib/adomer-toolkit/core/validate/validateReact
 
 class Test {
    static isReactApp(arg) {
-      console.log(app_validator.pathLeadsToReactApp(arg))
+      console.log(app_validator.getRelevantStats(arg))
    }
 }
 
