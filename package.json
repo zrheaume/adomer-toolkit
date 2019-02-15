@@ -1,13 +1,13 @@
 {
   "name": "adomer-toolkit",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Adomer configuration toolkit",
   "main": "index.js",
   "scripts": {
     "test": "node ./dev",
     "upg": "npm uninstall -g adomer-toolkit && npm install -g ."
   },
-  "bin": { 
+  "bin": {
     "atk": "./bin/core_analysis.js"
   },
   "keywords": [],
