@@ -2,5 +2,15 @@
 // In development
 
 let providedPath = process.argv[2]
+const target_app = providedPath || process.cwd()
 
-console.log(`Run core analysis on ${providedPath || process.cwd()}`)
+const app_validator = require("../lib/adomer-toolkit/core/validate/validateReactApp")
+
+class Test {
+   static isReactApp(arg) {
+      console.log(app_validator.pathLeadsToReactApp(arg))
+   }
+}
+
+console.log(target_app)
+Test.isReactApp(target_app)

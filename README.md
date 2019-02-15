@@ -6,14 +6,12 @@ Some features may include bugs that can affect you project directory.
 
 ## Usage
 
-adomer-toolkit provides a commandline toolkit that can be used to assist in React development
+adomer-toolkit provides a command line toolkit that can be used to assist in React development 
+Installing the package globally from npm gives access to the `atk` bin path.
 
-Installing the package globally from npm gives you access to the
-`atk` path.
-
-`npm install -g adomer-toolkit`
-`cd ~/projects/myProject`
-`atk init -n`
+`npm install -g adomer-toolkit`\n
+`cd ~/projects/myProject`\n
+`atk init -n`\n
 
 This will create the directory `~/projects/myProject/adomer` which contains a `config.json` file
 
