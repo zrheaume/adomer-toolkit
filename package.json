@@ -7,9 +7,8 @@
     "test": "node ./dev",
     "upg": "npm uninstall -g adomer-toolkit && npm install -g ."
   },
-  "bin": {
-    "atk": "./bin/atk.js",
-    "atk@core": "./bin/core_analysis.js"
+  "bin": { 
+    "atk": "./bin/core_analysis.js"
   },
   "keywords": [],
   "author": "Zach Rheaume",

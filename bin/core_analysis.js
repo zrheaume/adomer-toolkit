@@ -8,6 +8,10 @@ const target_app = providedPath || process.cwd()
 const app_validator = require("../lib/adomer-toolkit/core/validate/validateReactApp")
 
 switch (action) {
+   case "map":
+      app_validator.viewCoreMap(providedPath)
+      break
    case "?":
-      console.log(app_validator.getRelevantStats(providedPath))
+      app_validator.isReactEnabled(providedPath)
+      break
 }
