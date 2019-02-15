@@ -1,4 +1,6 @@
 #!/usr/bin/env node
 // In development
 
-console.log(`Run core analysis on ${process.cwd()}`)
+let providedPath = process.argv[2]
+
+console.log(`Run core analysis on ${providedPath || process.cwd()}`)
