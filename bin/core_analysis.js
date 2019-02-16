@@ -5,7 +5,7 @@ const action = process.argv[2]
 const providedPath = process.argv[3]
 const target_app = providedPath || process.cwd()
 
-const app_validator = require("../lib/adomer-toolkit/core/validate/validateReactApp.js")
+const app_validator = require("../adomer-toolkit/core/validate/validateReactApp.js")
 
 switch (action) {
    case "map":
