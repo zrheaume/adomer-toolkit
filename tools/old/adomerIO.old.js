@@ -8,7 +8,7 @@
 // Methods to create an interface with the console using readline
 // A series of switch statements to determine what action to take
 
-class AdomerCLI {
+class AdomerIO {
 
    // establishIO method
    // returns a readline Interface that gives control of the  to the CLI
@@ -22,7 +22,7 @@ class AdomerCLI {
    }
 
    constructor() {
-      this.io = this.establishIO()
+      this.wire = this.establishIO()
    }
 
    // prompt method 
@@ -53,4 +53,4 @@ class AdomerCLI {
 
 }
 
-module.exports = new AdomerCLI
+module.exports =  AdomerIO

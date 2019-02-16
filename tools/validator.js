@@ -2,6 +2,9 @@
 const fs = require("fs")
 const path = require("path")
 
+// ATKmap is the adomer toolkit dir mapping class
+// it takes in an appdir ( defaults to process.cwd() )
+// 
 class ATKmap {
    constructor(appDir) {
       this.mainDirPath = appDir
@@ -79,12 +82,14 @@ function viewCoreMap(appDir) {
    return new ATKmap(appDir).printMap()
 }
 
-function isReactEnabled(appDir) {
-   return new ATKmap(appDir).printStats()
+function reactEnabled(appDir) {
+   let runATKmapSync = new ATKmap(appDir) 
+   runATKmapSync.printStats()
+   return runATKmapSync.is["react-enabled"]
 }
 
 module.exports = { 
    ATKmap,
    viewCoreMap,
-   isReactEnabled
+   reactEnabled
 }
