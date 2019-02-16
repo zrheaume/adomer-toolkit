@@ -10,6 +10,9 @@
   "bin": {
     "atk": "./bin/core_analysis.js"
   },
+  "directories": {
+    "tools" : "./tools/."
+  },
   "keywords": [],
   "author": "Zach Rheaume",
   "repository": {
