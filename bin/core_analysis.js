@@ -9,9 +9,9 @@ const app_validator = require("./validator")
 
 switch (action) {
    case "map":
-      app_validator.viewCoreMap(providedPath)
+      app_validator.viewCoreMap(target_app)
       break
    case "?":
-      app_validator.isReactEnabled(providedPath)
+      app_validator.isReactEnabled(target_app)
       break
 }
