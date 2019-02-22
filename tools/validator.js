@@ -1,95 +1,97 @@
 #!/usr/bin/env node
 const fs = require("fs")
 const path = require("path")
-
+const utils = require("./utils")
+const log = str => console.log(str)
 // ATKmap is the adomer toolkit dir mapping class
 // it takes in an appdir ( defaults to process.cwd() )
 // 
-class ATKmap {
+
+class Validator {
    constructor(appDir) {
-      this.mainDirPath = appDir
-      this.has = {}
-      this.pathTo = { self: appDir }
-      this.mapped = 0
-      this.is = {
-         "react-enabled": null
+      this.appDir = appDir
+      this.pathTo = {
+         self: this.appDir
       }
-      this.mapDat = this.snoop(appDir)
+      this.meta = {
+         mapped: 0,
+         is: { "react-enabled": null },
+         has: {}
+      }
+      this.mapdata = this.snoopDir(appDir)
       this.determineAppValidity()
+      this.results = {
+         reactful : [],
+         expressful: [],
+      }
    }
 
-   snoop(pathLike) {
-      // Uses fs.lstat to determine if the path is a dir
-      if (pathLike[pathLike.length - 1] === "/") {
-         pathLike = pathLike.substring(0, pathLike.length - 1)
-      }
-      let rawStats = fs.lstatSync(pathLike)
-      let isDir = rawStats.isDirectory()
-      // Declare `next` var to be the next layer of files if a dir
-      // or null if not a dir
-      let next = isDir ? fs.readdirSync(pathLike) : (null);
-      (/^.*\/src$/.test(pathLike)) ? (this.setPath("src", pathLike)) : (null);
-      (/.*\/src\/index\.js/.test(pathLike)) ? (this.setPath("poe", pathLike)) : (null);
-      // If next is not null, we want to instantiate a new ATKsnoop
-      // class on each element of the array of files
-      let contains = {}
-      if (next !== null) {
-         for (let f = 0; f < next.length; f++) {
-            contains[next[f]] = (next[f] !== 'node_modules' && next[f] !== '.git') ? this.snoop(`${pathLike}/${next[f]}`) : "unmapped dir"
+   snoopDir(pathLike) {
+      console.log("mapping dir")
+
+      try { // Resolve input path
+         pathLike = path.resolve(pathLike)
+         // Use fs.lstat to determine if the path is a dir
+         let rawStats = fs.lstatSync(pathLike)
+         let isDir = rawStats.isDirectory()
+
+         // Declare `next` var to be the next layer of files if a dir or null if not a dir
+         let next = isDir ? fs.readdirSync(pathLike) : (null);
+
+         // Use regex test on path to check for certain react-standard directories
+         (/^.*\/src$/.test(pathLike)) ? (this.setPath("src", pathLike)) : (null);
+         (/.*\/src\/index\.js/.test(pathLike)) ? (this.setPath("poe", pathLike)) : (null);
+
+         // If next is not null, we want to instantiate a new ATKsnoop
+         // class on each element of the array of files
+         let contains = {}
+         if (next !== null) {
+            for (let f = 0; f < next.length; f++) {
+               contains[next[f]] = (next[f] !== 'node_modules' && next[f] !== '.git' &&next[f] !== 'build') ? this.snoopDir(`${pathLike}/${next[f]}`) : "unmapped dir"
+            }
+         } else if (next === null && !isDir) {
+            console.log(`Reading ${pathLike} for keywords`)
+            let fileContents = fs.readFileSync(pathLike, { encoding: "utf8" })
+            let flags = {
+               react: utils.includesReact(fileContents),
+               express: utils.includesExpress(fileContents),
+               listener_HTTP: utils.includesHTTPlistener(fileContents)
+            }
+            console.log(`${pathLike} : ${flags}`)
+            contains["flags"] = flags
+         } else {
+            console.log("Something's not right...")
+
          }
-      } else if (next === null) {
 
-      }
-
-      this.mapped++
-      return {
-         isDir,
-         contains
+         this.meta.mapped++
+         return {
+            isDir,
+            contains
+         }
+      } catch (err) {
+         console.error(err)
       }
    }
 
    setPath(ref, path) {
-      this.has[ref] = true
+      this.meta.has[ref] = true
       this.pathTo[ref] = path
    }
 
    determineAppValidity() {
       try {
          let POE = fs.readFileSync(this.pathTo["poe"], { encoding: "utf8" });
-         ((/((.*)\n)*reactdom\.render/gi).test(POE)) ? (this.is["react-enabled"] = true) : (this.is["react-enabled"] = false)
+         ((/((.*)\n)*reactdom\.render/gi).test(POE)) ? (this.meta.is["react-enabled"] = true) : (this.meta.is["react-enabled"] = false)
       } catch (err) {
-         this.is["react-enabled"] = false
+         this.meta.is["react-enabled"] = false
       }
    }
-
-   printStats() {
-      console.log(`success!\n`)
-      console.log(`audited ${this.mapped} files from [ App ] :: `)
-      console.log(`${this.pathTo["self"]}\n`)
-      console.log(`determined that this app ${this.is["react-enabled"] ? "*IS*" : "*IS NOT*"} react enabled`)
-      if (this.is["react-enabled"]) {
-         console.log(`found src dir at ${this.pathTo["src"]}`)
-         console.log(`found point of entry at ${this.pathTo["poe"]}`)
-      }
-   }
-
-   printMap() {
-      console.log(JSON.stringify(this.mapDat, null, 2))
-   }
 }
 
-function viewCoreMap(appDir) {
-   return new ATKmap(appDir).printMap()
+function run(appDir) {
+   return new Validator(appDir)
 }
 
-function reactEnabled(appDir) {
-   let runATKmapSync = new ATKmap(appDir) 
-   runATKmapSync.printStats()
-   return runATKmapSync.is["react-enabled"]
-}
 
-module.exports = { 
-   ATKmap,
-   viewCoreMap,
-   reactEnabled
-}
+module.exports = { Validator, run }

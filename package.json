@@ -4,11 +4,11 @@
   "description": "Adomer configuration toolkit",
   "main": "index.js",
   "scripts": {
-    "dev": "node index.js",
-    "upg": "npm uninstall -g adomer-toolkit && npm install -g adomer-toolkit"
+    "upPub": "npm uninstall -g adomer-toolkit && npm install -g adomer-toolkit",
+    "upLoc": "npm uninstall -g adomer-toolkit && npm install -g ."
   },
   "bin": {
-    "atk": "./bin/core_analysis.js"
+    "atk": "./bin/atk.js"
   },
   "directories": {
     "tools": "./tools/."
@@ -20,12 +20,11 @@
     "url": "https://github.com/zrheaume/adomer-toolkit"
   },
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "minimist": "^1.2.0",
+    "vis": "^4.21.0"
+  },
   "devDependencies": {
-    "nodemon": "^1.18.10",
-    "@babel/core": "^7.3.3",
-    "@babel/node": "^7.2.2",
-    "dotenv": "^6.2.0",
-    "@babel/preset-env": "^7.3.1"
+    "nodemon": "^1.18.10"
   }
 }
