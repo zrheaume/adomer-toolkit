@@ -28,8 +28,9 @@ switch (args._[0]) {
       // console.log(utils.isPathlike(args._[1]))
       // mapdat = new validator.Validator(target)
       // console.log(JSON.stringify(mapdat.mapdata, null, 3))
-      devObj = validator.run(target)
-      console.log(util.inspect(devObj, false, null, true /* enable colors */))
+      devValidator = new validator.Validator(target)
+      devProfiler = new profiler.Profiler(devValidator)
+      // console.log(util.inspect(devProfiler, false, null, true /* enable colors */))
       // console.log(mapdat)
    case "hook":
       break

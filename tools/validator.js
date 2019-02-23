@@ -15,14 +15,11 @@ class Validator {
          is: { "react-enabled": null },
          has: {}
       }
-      console.time("snoopDir")
       this.mapdata = this.snoopDir(appDir)
-      console.timeEnd("snoopDir")
       this.determineAppValidity()
    }
 
    snoopDir(pathLike) {
-      console.log("mapping dir")
       try {
          // Resolve input path
          pathLike = path.resolve(pathLike)
@@ -41,6 +38,7 @@ class Validator {
          // If next is not null, we want to instantiate a new ATKsnoop
          // class on each element of the array of files
          let contains = {}
+         let flags = {}
          let pathTo = pathLike
          if (next !== null) {
             for (let f = 0; f < next.length; f++) {
@@ -50,15 +48,15 @@ class Validator {
             console.clear()
             console.log(`Reading ${pathLike} for keywords`)
             let fileContents = fs.readFileSync(pathLike, { encoding: "utf8" })
-            let flags = {
+            flags = {
                react: utils.includesReact(fileContents),
                express: utils.includesExpress(fileContents),
                listener_HTTP: utils.includesHTTPlistener(fileContents)
             }
+            contains = null
             console.log(`${pathLike} : ${flags}`)
-            contains["flags"] = flags
          } else {
-            console.log("Something's not right...")
+            throw Error
          }
          
          this.meta.mapped++
@@ -66,7 +64,8 @@ class Validator {
          return {
             isDir,
             pathTo,
-            contains
+            contains,
+            flags
          }
       } catch (err) {
          console.error(err)
