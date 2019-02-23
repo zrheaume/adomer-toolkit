@@ -3,7 +3,7 @@ const minimist = require('minimist')
 const util =require("util")
 // Import utils
 const utils = require("./tools/utils/index")
-// console.log(utils)
+
 
 // Import atk tools
 const validator = require("./tools/validator")
@@ -14,8 +14,6 @@ const profiler = require("./tools/profiler")
 const args = minimist(process.argv.slice(2))
 console.log(args)
 
-// Define function returns true for pathlike str matching regex
-
 // Define `target` -> main execution arg of command
 let target
 
@@ -25,13 +23,13 @@ switch (args._[0]) {
    case "create":
       break
    case "?":
-      let mapdat
+      let devObj
       target = (utils.isPathlike(args._[1]) ? (args._[1] ? args._[1] : process.cwd()) : process.cwd())
       // console.log(utils.isPathlike(args._[1]))
       // mapdat = new validator.Validator(target)
       // console.log(JSON.stringify(mapdat.mapdata, null, 3))
-      mapdat = validator.run(target)
-      console.log(util.inspect(mapdat, false, null, true /* enable colors */))
+      devObj = validator.run(target)
+      console.log(util.inspect(devObj, false, null, true /* enable colors */))
       // console.log(mapdat)
    case "hook":
       break
