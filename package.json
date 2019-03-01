@@ -21,8 +21,10 @@
   },
   "license": "ISC",
   "dependencies": {
+    "chalk": "^2.4.2",
     "minimist": "^1.2.0",
-    "vis": "^4.21.0"
+    "vis": "^4.21.0",
+    "axios": "^0.18.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.10"

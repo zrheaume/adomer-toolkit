@@ -49,9 +49,9 @@ class Validator {
             console.log(`Reading ${pathLike} for keywords`)
             let fileContents = fs.readFileSync(pathLike, { encoding: "utf8" })
             flags = {
-               react: utils.includesReact(fileContents),
-               express: utils.includesExpress(fileContents),
-               listener_HTTP: utils.includesHTTPlistener(fileContents)
+               react: utils.includes.React(fileContents),
+               express: utils.includes.Express(fileContents),
+               listener_HTTP: utils.includes.HTTPlistener(fileContents)
             }
             contains = null
             console.log(`${pathLike} : ${flags}`)
