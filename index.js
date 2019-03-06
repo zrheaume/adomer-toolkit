@@ -2,28 +2,29 @@
 console.time("process")
 // Import minimist (CLI parser)
 const minimist = require('minimist')
-const util = require("util")
 // Import utils
 const utils = require("./tools/utils/index")
-
 // Import atk tools
 const validator = require("./tools/validator")
 const profiler = require("./tools/profiler")
 const client = require("./tools/client")
-
 // Parse process.argv as "args" with minimist
 const args = minimist(process.argv.slice(2))
-
 // Define `target` -> main execution arg of command
 let target
-
+// Run switch on `verb` [[first arg]]
 switch (args._[0]) {
+   // login command
    case "login":
-      let creds = {
-         username: args.u,
-         secret: args.p
+      if ((args.u && args.p) || (args.username && args.password)) {
+         let creds = {
+            username: args.u || args.username,
+            secret: args.p || args.password
+         }
+         client.getServiceID(creds)
+      } else {
+         utils.err("login command requires args : (-u || -username) && (-p || -password)")
       }
-      client.getServiceID(creds)
       break
    case "create":
       break
@@ -34,16 +35,27 @@ switch (args._[0]) {
       // console.log(JSON.stringify(mapdat.mapdata, null, 3))
       let devValidator = new validator.Validator(target)
       let devProfiler = new profiler.Profiler(devValidator)
+      // let toSvr = JSON.stringify({ val : devValidator, prof: devProfiler})
       console.timeEnd("process")
-      // console.log(util.inspect(devProfiler.flaggedAs, false, null, true /* enable colors */))
+      // console.log(util.inspect(devProfiler, false, null, true /* enable colors */))
+      // console.log(util.inspect(devValidator, false, null, true /* enable colors */))
+      // console.log(toSvr)
       break
    case "sbx":
       console.log(args.c)
       if (args.c) {
-         utils.getClientCred().then(cred=>console.log(cred)).catch(err=>{throw err})
+         utils.getClientCred().then(cred => console.log(cred)).catch(err => { throw err })
       }
       break
    case "hook":
+      target = (utils.isPathlike(args._[1]) ? (args._[1] ? args._[1] : process.cwd()) : process.cwd())
+      if (args.a) {
+         client.hook(target, args.a)
+      } else if (args.app) {
+         client.hook(target, args.app)
+      } else {
+         utils.err("atkERR: `hook` requires an arg (-app || -a) <appName>")
+      }
       break
    case "reel":
       break

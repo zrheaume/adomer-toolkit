@@ -2,8 +2,7 @@
 const fs = require("fs")
 const path = require("path")
 const utils = require("./utils")
-const profiler = require("./profiler")
-
+ 
 class Validator {
    constructor(appDir) {
       this.appDir = appDir
@@ -42,7 +41,8 @@ class Validator {
          let pathTo = pathLike
          if (next !== null) {
             for (let f = 0; f < next.length; f++) {
-               contains[next[f]] = (next[f] !== 'node_modules' && next[f] !== '.git' &&next[f] !== 'build') ? this.snoopDir(`${pathLike}/${next[f]}`) : "unmapped dir"
+               //TODO: paramaterize
+               contains[next[f]] = (next[f] !== 'node_modules' && next[f] !== '.git' &&next[f] !== 'build' &&next[f]!== ".DS_Store") ? this.snoopDir(`${pathLike}/${next[f]}`) : "unmapped dir/file"
             }
          } else if (next === null && !isDir) {
             console.clear()
@@ -80,19 +80,11 @@ class Validator {
    determineAppValidity() {
       try {
          let POE = fs.readFileSync(this.pathTo["poe"], { encoding: "utf8" });
-         ((/((.*)\n)*reactdom\.render/gi).test(POE)) ? (this.meta.is["react-enabled"] = true) : (this.meta.is["react-enabled"] = false)
+         ((/((.*)\n)*reactdom\.render/gmi).test(POE)) ? (this.meta.is["react-enabled"] = true) : (this.meta.is["react-enabled"] = false)
       } catch (err) {
          this.meta.is["react-enabled"] = false
       }
    }
 }
 
-function run(appDir) {
-   let thisValidator = new Validator(appDir)
-   let thisProfiler = new profiler.Profiler(thisValidator)
-
-   return thisProfiler
-}
-
-
-module.exports = { Validator, run }
+module.exports = { Validator }

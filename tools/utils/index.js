@@ -1,17 +1,26 @@
 const fs = require("fs")
+const chalk = require("chalk")
 module.exports = {
+   err : str=> console.error(chalk.white.bgRed("atkERR: " + str)),
    isPathlike: str => /(.*\/)*/g.test(str),
    isScript: str => /.*\.js/.test(str),
    isFunctionComponent: str => /.*function.*\(.*props.*\).*{/gi.test(str),
    isClassComponent: str => /.*class.*extends.*{.*Component.*}/.test(str),
+   reduceWhiteSpace: function (str) {
+      return str.replace(/\s+/g, ' ');
+   },
+   killWhiteSpace: function (str) {
+      return str.replace(/\s+/g, '');
+   },
    includes: {
       React: str => /.*import React.*/gmi.test(str),
       Express: str => /.*import express.*/gmi.test(str),
       HTTPlistener: str => /.*\.listen/gmi.test(str),
       importTag: str => /.*import.*/g.test(str),
+      rootRender: str => /((.*)\n)*reactdom\.render/gi.test(str),
       importItem: (str, item) => {
          let qStr = `import .*${item}.*`
-         let qReg = new RegExp(qStr, "g")
+         let qReg = new RegExp(qStr, "gmi")
          return qReg.test(str)
       },
       exportItem: (str, item) => {
@@ -35,7 +44,7 @@ module.exports = {
    getClientCred: () => {
       return new Promise(function (resolve, reject) {
          try {
-            fs.readFile("/usr/local/bin/.atk", {encoding: "utf8"}, (err, data) => {
+            fs.readFile("/usr/local/bin/.atk", { encoding: "utf8" }, (err, data) => {
                if (err) throw new Error("atk ERR: Could not read .atk conig\n" + err)
                return resolve(data)
             })
@@ -43,8 +52,6 @@ module.exports = {
             return reject(err)
          }
       })
-
-
    }
 
 }
