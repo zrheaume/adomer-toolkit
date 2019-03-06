@@ -1,13 +1,17 @@
 {
   "name": "adomer-toolkit",
-  "version": "1.0.10",
+  "version": "1.0.14",
   "description": "Adomer configuration toolkit",
   "main": "index.js",
   "scripts": {
-    "upg": "npm uninstall -g adomer-toolkit && npm install -g adomer-toolkit"
+    "upPub": "npm uninstall -g adomer-toolkit && npm install -g adomer-toolkit",
+    "upLoc": "npm uninstall -g adomer-toolkit && npm install -g ."
   },
   "bin": {
-    "atk": "./bin/core_analysis.js"
+    "atk": "./bin/atk.js"
+  },
+  "directories": {
+    "tools": "./tools/."
   },
   "keywords": [],
   "author": "Zach Rheaume",
@@ -16,6 +20,14 @@
     "url": "https://github.com/zrheaume/adomer-toolkit"
   },
   "license": "ISC",
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "minimist": "^1.2.0",
+    "vis": "^4.21.0",
+    "axios": "^0.18.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
 }
