@@ -1,9 +1,12 @@
+// Require atk utils
+const utils = require("./utils")
+const timer = new utils.Timer("profiler")
+timer.start()
+
 // Require dependencies
 const fs = require("fs")
 const chalk = require("chalk")
 
-// Require atk utils
-const utils = require("./utils")
 // Require extractor
 const ext = require("./extractor")
 // Require mapper
@@ -13,14 +16,19 @@ class Profiler {
    constructor(validator) {
       try {
          // this.validator = validator
+         timer.log("Flattening the hierarchy")
          this._flat = this.makeFlat(validator)
          this.types = []
+         timer.log("Dehumanizing application")
          this.extracted = this.findComponents(this.aggregateFlags())
+         timer.log("Trying to look smart")
          this.stats = this.getStats()
+         timer.log("Practicing cartography")
          this.tree = new mapper.Tree(this.extracted, validator.pathTo.poe)
+         timer.end("Ready to transfer.")
          // this.tree = this.createTree(validator)
       } catch (err) {
-         console.error(err)
+         utils.err(err)
       }
    }
 
@@ -45,19 +53,19 @@ class Profiler {
                let someKey = childKeys[q]
                let someItem = obj.contains[someKey]
                if (someItem.isDir && someItem.contains !== null) {
-                  console.clear()
-                  console.log("flattening subdir")
+                  // console.clear()
+                  // console.log("flattening subdir")
                   flatten(someItem)
                } else if (!someItem.isDir && someItem.contains === null) {
-                  console.clear()
-                  console.log("branch ended. pushing.")
+                  // console.clear()
+                  // console.log("branch ended. pushing.")
                   _flat.push([someKey, someItem])
                }
             }
             // console.log(`${childKeys[0]} : ${obj.contains[childKeys[0]]}`)
          } else {
-            console.clear()
-            console.log("not dir. Should push.")
+            // console.clear()
+            // console.log("not dir. Should push.")
             _flat.push(obj)
 
          }
@@ -88,6 +96,7 @@ class Profiler {
       try {
          // console.log(flags.react.length)
          for (let q = 0; q < flags.react.length; q++) {
+
             // for (let q = 0; q < 2; q++){
             let fileInfo = flags.react[q]
             let fileName = fileInfo[0]
@@ -108,10 +117,10 @@ class Profiler {
                         let line = lineArr[l]
                         if (utils.isFunctionComponent(line)) {
                            components.func.push(l)
-                           console.log(chalk.blue.bgWhite(`${l} -> ${line}`))
+                           // console.log(chalk.blue.bgWhite(`${l} -> ${line}`))
                         } else if (utils.isClassComponent(line)) {
                            components.class.push(l)
-                           console.log(chalk.red.bgWhite(`${l} -> ${line}`))
+                           // console.log(chalk.red.bgWhite(`${l} -> ${line}`))
                         }
                      }
                      // console.log(components)
@@ -126,14 +135,13 @@ class Profiler {
                      // console.log(extractor)
                      // this.extracted.push({extractor})
                   }
-
                }
             } else {
                throw q
             }
          }
       } catch (err) {
-         console.error(err)
+         utils.err(err)
       } finally {
          return grab
       }
@@ -177,7 +185,7 @@ class Profiler {
          theStats.μStSl = theStats.ΣSt / theStats.ΣSl
       }
 
-         console.log(chalk.yellow.bold.bgBlue(JSON.stringify(theStats)))
+         // console.log(chalk.yellow.bold.bgBlue(JSON.stringify(theStats)))
       return theStats
    }
 }

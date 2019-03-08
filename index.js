@@ -1,9 +1,11 @@
-// DEV FT Start process timer 
-console.time("process")
+// DEV FT Start process timer
 // Import minimist (CLI parser)
 const minimist = require('minimist')
 // Import utils
 const utils = require("./tools/utils/index")
+// DEV Declare process Timer and start it.
+let timer = new utils.Timer("atk")
+timer.start()
 // Import atk tools
 const validator = require("./tools/validator")
 const profiler = require("./tools/profiler")
@@ -16,7 +18,9 @@ let target
 switch (args._[0]) {
    // login command
    case "login":
-      if ((args.u && args.p) || (args.username && args.password)) {
+      // if we pass -u or -username and we pass -p or -password we can submit credentials
+      // to the server
+      if ((args.u || args.username) && (args.p || args.password)) {
          let creds = {
             username: args.u || args.username,
             secret: args.p || args.password
@@ -33,26 +37,30 @@ switch (args._[0]) {
       // console.log(utils.isPathlike(args._[1]))
       // mapdat = new validator.Validator(target)
       // console.log(JSON.stringify(mapdat.mapdata, null, 3))
+      // timer.log("building validator")
       let devValidator = new validator.Validator(target)
+      // timer.log("building profiler")
       let devProfiler = new profiler.Profiler(devValidator)
+      timer.end()
       // let toSvr = JSON.stringify({ val : devValidator, prof: devProfiler})
-      console.timeEnd("process")
       // console.log(util.inspect(devProfiler, false, null, true /* enable colors */))
       // console.log(util.inspect(devValidator, false, null, true /* enable colors */))
       // console.log(toSvr)
       break
    case "sbx":
-      console.log(args.c)
+      // console.log(args.c)
       if (args.c) {
-         utils.getClientCred().then(cred => console.log(cred)).catch(err => { throw err })
+         utils.getClientCred().then(cred => "TODO: add validator").catch(err => { throw err })
       }
       break
    case "hook":
       target = (utils.isPathlike(args._[1]) ? (args._[1] ? args._[1] : process.cwd()) : process.cwd())
-      if (args.a) {
-         client.hook(target, args.a)
-      } else if (args.app) {
-         client.hook(target, args.app)
+      if (args.a || args.app) {
+         client.hook(target, args.a || args.app).then(status => {
+            if (status === "ok!") {
+               timer.end()
+            }
+         })
       } else {
          utils.err("atkERR: `hook` requires an arg (-app || -a) <appName>")
       }

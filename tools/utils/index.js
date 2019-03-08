@@ -1,5 +1,21 @@
 const fs = require("fs")
 const chalk = require("chalk")
+class Timer {
+   constructor(label, color="magenta") {
+      this.start = (msg = `starting ${label}`) => {
+         console.time(label)
+         console.log(chalk.green.bold(msg))
+      }
+      this.end = (msg = "Done.") => {
+         console.log(chalk.bold("Process completed with no issues."))
+         console.timeEnd(label)
+         console.log(chalk.green.bold(msg))
+      }
+      this.log = (msg) => {
+         console.timeLog(label, chalk[color].bold(msg))
+      }
+   }
+}
 module.exports = {
    err : str=> console.error(chalk.white.bgRed("atkERR: " + str)),
    isPathlike: str => /(.*\/)*/g.test(str),
@@ -52,6 +68,7 @@ module.exports = {
             return reject(err)
          }
       })
-   }
+   },
+   Timer : Timer
 
 }
