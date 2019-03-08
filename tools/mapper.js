@@ -2,36 +2,81 @@ const fs = require("fs")
 const chalk = require("chalk")
 const utils = require("./utils")
 const uuid = require("uuid/v4")
-const good = str => console.log(chalk.bold.bgGreen.magenta(str))
+const good = str => console.log(chalk.bold.magenta(str))
 
-const findChildren = (parent) => {
-   let theLines = parent.split("\n")
-   // good("Split lines")
+const findChildren = (parent, usrDef) => {
+   let theLines = parent.content.split("\n")
    let results = []
-   // good("Declared empty brk")
+   let openTag = /<\s*([a-z]+)\w*>/i
+   let closeTag = /<\s*\/\s*([a-z]+)\s*>/i
+   let selfClosingTag = /<\s*([a-z]+).*\/>/i
+   let routerTag = /component={([a-z]+)}/i
+   let count = {
+      open: 0,
+      all: 0
+   }
+   let tags = {
+      open: []
+   }
    for (let h = 0; h < theLines.length; h++) {
-      // good(h)
-      let testExp = new RegExp("<([a-z]+)\ ?([a-z]+=\".*?\"\ ?)?>([.\n\sa-z]*)(<\/\1>)?", "i")
-      let exists = {
-         "?": testExp.test(theLines[h]),
-         "!": testExp.exec(theLines[h])
-      }
-      if (exists["?"]) {
-         if (exists["!"][1].toLowerCase() === "route") {
-            exists["!"][1] = /component={(.*)}/i.exec(exists["!"][0])[1]
+      let line = theLines[h]
+      let lineContainsOpenTag = openTag.test(line)
+      let lineContainsCloseTag = closeTag.test(line)
+      let lineContainsSelfClosingTag = selfClosingTag.test(line)
+      let ind = `${h} -> `
+      if (lineContainsOpenTag) {
+         ind = chalk.green(ind)
+         let someTag = openTag.exec(line)[1]
+         console.log(`${someTag} just opened`)
+         if ((usrDef.indexOf(someTag) > -1)) {
+            console.log(chalk.bold.green("found user defined component"))
+            results.push(someTag)
          }
-         results.push(exists["!"])
+         count.open++
+         tags.open.push(someTag)
+      } else if (lineContainsCloseTag) {
+         ind = chalk.yellow(ind)
+         let someTag = closeTag.exec(line)[1]
+         if ((usrDef.indexOf(someTag) > -1)) {
+            console.log(chalk.bold.green("found user defined component"))
+            results.push(someTag)
+         }
+         if (tags.open.lastIndexOf(someTag) === tags.open.length - 1) {
+            console.log(someTag + " closed ")
+            count.open--
+            tags.open.pop()
+            if (count.open > 0) {
+               console.log(`${tags.open} tags still open`)
+            } else {
+               console.log("All non-self-closing tags have been closed")
+            }
+         }
+      } else if (lineContainsSelfClosingTag) {
+         ind = chalk.magenta(ind)
+         let someTag = selfClosingTag.exec(line)[1]
+         if ((usrDef.indexOf(someTag) > -1)) {
+            console.log(chalk.bold.green("found user defined component"))
+            results.push(someTag)
+         }
+         console.log(`${someTag} is self closing`)
+         if (someTag.toLowerCase() === "route") {
+            if (routerTag.test(line)) {
+               let ref = routerTag.exec(line)[1]
+               if ((usrDef.indexOf(ref) > -1)) {
+                  console.log(chalk.bold.green("found user defined ref in Route"))
+                  results.push(ref)
+               }
+               console.log(`Route refrences ${ref}`)
+            } else {
+               utils.err("Couldn't resolve router reference")
+            }
+         }
+      } else {
+         ind = chalk.red(ind)
       }
-      // results.push((/<([a-zA-Z1-6]+)([^<]+)*(?:>(.*)<\/\1>|\s+\/>)/).test(lineArr[h]))
+      console.log(ind + line)
    }
    return results
-}
-
-class Layer {
-   constructor(obj) {
-      this.leaves = obj.leaves
-      this.branches = obj.branches
-   }
 }
 
 class Tree {
@@ -45,16 +90,18 @@ class Tree {
          return item.CID
       })
       this.nodes = []
-      this.edges = []
+      this.links = []
       this.POE = this.locateTreeRoot()
       console.log(this.names)
       console.log(this.ids)
       this.root = this.names.indexOf(this.POE["render"]["component"])
-      this.trace(this.names[this.root])
-
+      if (this.root !== -1) {
+         this.trace(this.names[this.root])
+      } else {
+         utils.err("Root component is not a member of user defined components array")
+      }
       good(this.nodes)
-      good(this.edges)
-      // good(JSON.stringify(this.root))
+      good(this.links)
    }
 
    trace(parent, parentID = uuid()) {
@@ -63,17 +110,17 @@ class Tree {
       let thisTreeID = parentID
       good("Tracing " + thisComponent)
       if (this.names.indexOf(parent) !== -1) {
-         let children = findChildren(this.list[this.names.indexOf(parent)].content)
-         good(children)
-         this.nodes.push({ id: thisTreeID, component: thisComponent })
-         children.forEach((item, n) => {
-            good("Pushing child")
-            let childID = uuid()
-            this.nodes.push({ id: childID, component: item })
-            this.edges.push({ source: thisTreeID, target: childID })
-            good("Tracing child")
-            this.trace(item, parentID)
-         })
+         this.nodes.push({ id: parentID, component: parent })
+         let children = findChildren(this.list[this.names.indexOf(parent)], this.names)
+         console.log(children)
+         if (children.length > 0) {
+            for (let h = 0; h < children.length; h++) {
+               let childID = uuid()
+               this.nodes.push({ id: childID, component: children[h] })
+               this.links.push({ source: thisTreeID, target: childID })
+               this.trace(children[h], childID)
+            }
+         }
       }
    }
 
