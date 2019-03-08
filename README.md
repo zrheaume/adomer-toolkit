@@ -1,4 +1,4 @@
-#adomer-toolkit
+# adomer-toolkit
 ### A react-app analysis and management tool
 __Warning : As of version 1.0.x this npm package is in development and should be used carefully__
 Some features may include bugs that can affect your project directory.
