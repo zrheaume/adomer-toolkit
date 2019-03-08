@@ -1,5 +1,5 @@
 # adomer-toolkit
-### A lightweight analysis tool for create-react-app style applications
+## A lightweight analysis tool for create-react-app style applications
 
 
 __Warning : As of version 1.0.x this npm package is in development and should be used carefully__
