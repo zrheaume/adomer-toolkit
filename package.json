@@ -6,7 +6,7 @@
   "scripts": {
     "upPub": "npm uninstall -g adomer-toolkit && npm install -g adomer-toolkit",
     "upLoc": "npm uninstall -g adomer-toolkit && npm install -g .",
-    "git" : "git add -A && git commit -m 'scripted upload' && git push origin mvp" 
+    "deploy" : "git add -A && git commit -m 'scripted deployment' && git push origin mvp" 
   },
   "bin": {
     "atk": "./bin/atk.js"
