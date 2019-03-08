@@ -11,12 +11,12 @@ const getServiceID = function (creds) {
          if (res.data) {
             utils.writeClientConfig(res.data).then(status => {
                if (status === 1) {
-                  console.log(chalk.bold.green("atk client configuration successful"))
+                  console.log(chalk.bold.green("atk: client configuration successful"))
                }
             })
          }
       }).catch(err => {
-         utils.err("ServiceErr: Could not verify credentials\n" + err)
+         utils.err("ServiceErr  !   Could not verify credentials\n" + err)
       })
 }
 const hook = function (appDir, appName) {
@@ -32,7 +32,7 @@ const hook = function (appDir, appName) {
          axios.post("https://adomer.herokuapp.com/api/apps", toSvr).then(res => {
             console.log(res.data)
          }).catch(err => {
-            utils.err("ServiceErr: Could not hook application\n" + err)
+            utils.err("ServiceErr  !   Could not hook application\n" + err)
          })
 
       } catch (err) {

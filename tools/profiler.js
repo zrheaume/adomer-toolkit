@@ -110,7 +110,7 @@ class Profiler {
                            components.func.push(l)
                            console.log(chalk.blue.bgWhite(`${l} -> ${line}`))
                         } else if (utils.isClassComponent(line)) {
-                           components.class.push(line)
+                           components.class.push(l)
                            console.log(chalk.red.bgWhite(`${l} -> ${line}`))
                         }
                      }

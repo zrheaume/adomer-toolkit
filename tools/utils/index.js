@@ -5,7 +5,7 @@ module.exports = {
    isPathlike: str => /(.*\/)*/g.test(str),
    isScript: str => /.*\.js/.test(str),
    isFunctionComponent: str => /.*function.*\(.*props.*\).*{/gi.test(str),
-   isClassComponent: str => /.*class.*extends.*{.*Component.*}/.test(str),
+   isClassComponent: str => /.*class\s+([A-Za-z]+)\s+extends/gi.test(str),
    reduceWhiteSpace: function (str) {
       return str.replace(/\s+/g, ' ');
    },
