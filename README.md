@@ -1,9 +1,9 @@
+# adomer-toolkit
+### A lightweight analysis tool for create-react-app style applications
 __Warning : As of version 1.0.x this npm package is in development and should be used carefully__
 
 _Some features may include bugs that can affect your project directory._
 
-# adomer-toolkit
-### A lightweight analysis tool for create-react-app style applications
 
 ## atk CLI
 The atk CLI is the primary feature of the adomer toolkit, and it provides features to run a series of analyses on create-react-app style applications. The results of these various operations can be transmitted to [adomer online](https://adomer.herokuapp.com/), where you can view statistics and component-tree maps for all of your applications in one easy location. 
