@@ -1,12 +1,12 @@
 {
   "name": "adomer-toolkit",
-  "version": "1.0.17",
+  "version": "1.0.18",
   "description": "Adomer configuration toolkit",
   "main": "index.js",
   "scripts": {
     "upPub": "npm uninstall -g adomer-toolkit && npm install -g adomer-toolkit",
     "upLoc": "npm uninstall -g adomer-toolkit && npm install -g .",
-    "deploy" : "git add -A && git commit -m 'scripted deployment' && git push origin master" 
+    "deploy": "git add -A && git commit -m 'scripted deployment' && git push origin master"
   },
   "bin": {
     "atk": "./bin/atk.js"
