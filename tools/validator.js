@@ -2,7 +2,11 @@
 const fs = require("fs")
 const path = require("path")
 const utils = require("./utils")
- 
+
+const timer = new utils.Timer("validator")
+timer.start()
+
+
 class Validator {
    constructor(appDir) {
       this.appDir = appDir
@@ -14,8 +18,10 @@ class Validator {
          is: { "react-enabled": null },
          has: {}
       }
+      timer.log("Propogating nosiness")
       this.mapdata = this.snoopDir(appDir)
       this.determineAppValidity()
+      timer.end("done.")
    }
 
    snoopDir(pathLike) {
@@ -45,8 +51,8 @@ class Validator {
                contains[next[f]] = (next[f] !== 'node_modules' && next[f] !== '.git' &&next[f] !== 'build' &&next[f]!== ".DS_Store") ? this.snoopDir(`${pathLike}/${next[f]}`) : "unmapped dir/file"
             }
          } else if (next === null && !isDir) {
-            console.clear()
-            console.log(`Reading ${pathLike} for keywords`)
+            // console.clear()
+            // console.log(`Reading ${pathLike} for keywords`)
             let fileContents = fs.readFileSync(pathLike, { encoding: "utf8" })
             flags = {
                react: utils.includes.React(fileContents),
@@ -54,7 +60,7 @@ class Validator {
                listener_HTTP: utils.includes.HTTPlistener(fileContents)
             }
             contains = null
-            console.log(`${pathLike} : ${flags}`)
+            // console.log(`${pathLike} : ${flags}`)
          } else {
             throw Error
          }
@@ -68,7 +74,7 @@ class Validator {
             flags
          }
       } catch (err) {
-         console.error(err)
+         utils.err(err)
       }
    }
 

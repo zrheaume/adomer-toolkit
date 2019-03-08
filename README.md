@@ -8,7 +8,9 @@ Some features may include bugs that can affect your project directory.
 Go to https://adomer.herokuapp.com to sign up and view application diagnostics.
 
 ## atk CLI
-### Installation
+<div style="background-color: ">
+
+</div>
 In bash, run<br />
 <br />
 `$ npm install -g adomer-toolkit`<br />

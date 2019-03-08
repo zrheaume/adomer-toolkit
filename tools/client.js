@@ -30,7 +30,8 @@ const hook = function (appDir, appName) {
             content: JSON.stringify(profiler)
          }
          axios.post("https://adomer.herokuapp.com/api/apps", toSvr).then(res => {
-            console.log(res.data)
+            // console.log(res.data)
+            return resolve(res.data)
          }).catch(err => {
             utils.err("ServiceErr  !   Could not hook application\n" + err)
          })
