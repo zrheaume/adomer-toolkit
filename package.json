@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "upPub": "npm uninstall -g adomer-toolkit && npm install -g adomer-toolkit",
-    "upLoc": "npm uninstall -g adomer-toolkit && npm install -g ."
+    "upLoc": "npm uninstall -g adomer-toolkit && npm install -g .",
+    "git" : "git add -A && git commit -m '$MSG' && git push orgin master" 
   },
   "bin": {
     "atk": "./bin/atk.js"
