@@ -1,6 +1,6 @@
 {
   "name": "adomer-toolkit",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "Adomer configuration toolkit",
   "main": "index.js",
   "scripts": {
