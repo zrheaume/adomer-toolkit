@@ -15,14 +15,29 @@ The atk CLI is the primary feature of the adomer toolkit, and it provides featur
 ### Getting Started
 Accessing the atk CLI is as simple as globally installing the adomer-toolkit package. If you don't already have an account with [adomer online](https://adomer.herokuapp.com/), you'll need to make one.
 
-```
+<code>
 $ npm install -g adomer-toolkit
 
 $ atk login -u fooMan -p fooBar
    or
 $ atk login -username fooMan -password fooBar
+</code>
 
-```
+
 __*That's it!*__
 If atk exits with `atk client configuration succesful`, you're set. Your local machine is now connected to your adomer online account.
 
+### Adding Applications
+Adding applications to your adomer online account allows you to view their attributes through adomer's tree rendering engine, and it's painfully simple.
+
+To add an application, use the __atk hook__ command.
+`atk hook` has a mandatory flag of `-a <applicationName>`, and optionally takes in a filepath. If no filepath is given, hook will be run on the working directory from which it was called.
+
+<code>
+   $ cd ./projects/MyProject/
+   $ atk hook -a "My Project"
+   <em> optionally </em>
+   $ atk hook ~/Documents/projects/MyProject/ -a "My Project"
+   ...
+   $ ok!
+</code>

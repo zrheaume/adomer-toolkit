@@ -4,20 +4,31 @@ const chalk = require("chalk")
 const Profiler = require("./profiler").Profiler
 const Validator = require("./validator").Validator
 const getServiceID = function (creds) {
-   // console.log(creds)
-   axios.put("https://adomer.herokuapp.com/act/addClient", creds)
-      .then((res) => {
-         // console.log(res.data)
-         if (res.data) {
-            utils.writeClientConfig(res.data).then(status => {
-               if (status === 1) {
-                  console.log(chalk.bold.green("atk: client configuration successful"))
+   return new Promise(function (resolve, reject) {
+      try {
+         axios.put("https://adomer.herokuapp.com/act/addClient", creds)
+            .then((res) => {
+               // console.log(res.data)
+               if (res.data) {
+                  utils.writeClientConfig(res.data).then(status => {
+                     if (status === 1) {
+                        console.log(chalk.bold.green("atk: client configuration successful"))
+                        return resolve(status)
+                     } else {
+                        utils.err("Could not write client config")
+                     }
+                  })
+               } else {
+                  utils.err("Could not GET client config")
                }
+            }).catch(err => {
+               utils.err("ServiceErr  !   Could not verify credentials\n" + err)
             })
-         }
-      }).catch(err => {
-         utils.err("ServiceErr  !   Could not verify credentials\n" + err)
-      })
+      } catch (err) {
+         return reject(err)
+      }
+   })
+   // console.log(creds)
 }
 const hook = function (appDir, appName) {
    return new Promise(async function (resolve, reject) {

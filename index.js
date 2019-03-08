@@ -25,7 +25,13 @@ switch (args._[0]) {
             username: args.u || args.username,
             secret: args.p || args.password
          }
-         client.getServiceID(creds)
+         client.getServiceID(creds).then(status => {
+            if (status === 1) {
+               timer.end()
+            } else {
+               utils.err("Something went wrong.")
+            }
+         })
       } else {
          utils.err("login command requires args : (-u || -username) && (-p || -password)")
       }

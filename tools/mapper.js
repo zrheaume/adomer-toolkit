@@ -1,12 +1,11 @@
 const utils = require("./utils")
 const timer = new utils.Timer("mapper")
-timer.start()
+
 
 const fs = require("fs")
 const chalk = require("chalk")
 const uuid = require("uuid/v4")
 // const good = str => console.log(chalk.bold.magenta(str))
-timer.log("Communicating boundaries")
 const findChildren = (parent, usrDef) => {
    let theLines = parent.content.split("\n")
    let results = []
@@ -84,6 +83,7 @@ const findChildren = (parent, usrDef) => {
 
 class Tree {
    constructor(extracted, origin) {
+      timer.start()
       timer.log("Planting seeds")
       this.origin = origin
       this.list = extracted

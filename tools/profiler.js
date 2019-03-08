@@ -1,7 +1,6 @@
 // Require atk utils
 const utils = require("./utils")
 const timer = new utils.Timer("profiler")
-timer.start()
 
 // Require dependencies
 const fs = require("fs")
@@ -14,8 +13,8 @@ const mapper = require("./mapper")
 
 class Profiler {
    constructor(validator) {
+      timer.start()
       try {
-         // this.validator = validator
          timer.log("Flattening the hierarchy")
          this._flat = this.makeFlat(validator)
          this.types = []
@@ -26,7 +25,6 @@ class Profiler {
          timer.log("Practicing cartography")
          this.tree = new mapper.Tree(this.extracted, validator.pathTo.poe)
          timer.end("Ready to transfer.")
-         // this.tree = this.createTree(validator)
       } catch (err) {
          utils.err(err)
       }
@@ -163,14 +161,14 @@ class Profiler {
          theStats.ΣCl += this.types[q].class.length
       }
 
-      for (let j = 0; j < this.extracted.length; j++){
+      for (let j = 0; j < this.extracted.length; j++) {
          let theComp = this.extracted[j].content
-         if( /usestate/gmi.test(theComp) ) {
-            theStats.ΣSt ++
-         } else if ( /this\.state/gmi.test(theComp) ) {
-            theStats.ΣSt ++
+         if (/usestate/gmi.test(theComp)) {
+            theStats.ΣSt++
+         } else if (/this\.state/gmi.test(theComp)) {
+            theStats.ΣSt++
          } else {
-            theStats.ΣSl ++
+            theStats.ΣSl++
          }
       }
 
@@ -181,11 +179,11 @@ class Profiler {
          theStats.μFuCl = "all"
       }
 
-      if ( theStats.ΣSt > 0 && theStats.ΣSl > 0) {
+      if (theStats.ΣSt > 0 && theStats.ΣSl > 0) {
          theStats.μStSl = theStats.ΣSt / theStats.ΣSl
       }
 
-         // console.log(chalk.yellow.bold.bgBlue(JSON.stringify(theStats)))
+      // console.log(chalk.yellow.bold.bgBlue(JSON.stringify(theStats)))
       return theStats
    }
 }

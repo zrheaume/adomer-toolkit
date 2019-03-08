@@ -4,11 +4,11 @@ const path = require("path")
 const utils = require("./utils")
 
 const timer = new utils.Timer("validator")
-timer.start()
 
 
 class Validator {
    constructor(appDir) {
+      timer.start()
       this.appDir = appDir
       this.pathTo = {
          self: this.appDir
@@ -28,7 +28,7 @@ class Validator {
       try {
          // Resolve input path
          pathLike = path.resolve(pathLike)
-         
+
          // Use fs.lstat to determine if the path is a dir
          let rawStats = fs.lstatSync(pathLike)
          let isDir = rawStats.isDirectory()
@@ -48,7 +48,7 @@ class Validator {
          if (next !== null) {
             for (let f = 0; f < next.length; f++) {
                //TODO: paramaterize
-               contains[next[f]] = (next[f] !== 'node_modules' && next[f] !== '.git' &&next[f] !== 'build' &&next[f]!== ".DS_Store") ? this.snoopDir(`${pathLike}/${next[f]}`) : "unmapped dir/file"
+               contains[next[f]] = (next[f] !== 'node_modules' && next[f] !== '.git' && next[f] !== 'build' && next[f] !== ".DS_Store") ? this.snoopDir(`${pathLike}/${next[f]}`) : "unmapped dir/file"
             }
          } else if (next === null && !isDir) {
             // console.clear()
@@ -64,9 +64,9 @@ class Validator {
          } else {
             throw Error
          }
-         
+
          this.meta.mapped++
-         
+
          return {
             isDir,
             pathTo,
@@ -82,7 +82,7 @@ class Validator {
       this.meta.has[ref] = true
       this.pathTo[ref] = path
    }
-   
+
    determineAppValidity() {
       try {
          let POE = fs.readFileSync(this.pathTo["poe"], { encoding: "utf8" });
