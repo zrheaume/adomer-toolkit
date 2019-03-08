@@ -36,8 +36,8 @@ To add an application, use the __atk hook__ command.
 ```
    $ cd ./projects/MyProject/
    $ atk hook -a "My Project"
-   <em> optionally </em>
-   $ atk hook ~/Documents/projects/MyProject/ -a "My Project"
+   [[ optionally ]]
+   [[ $ atk hook ~/Documents/projects/MyProject/ -a "My Project" ]]
    ...
    $ ok!
 ```
