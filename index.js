@@ -7,8 +7,8 @@ const utils = require("./tools/utils/index")
 let timer = new utils.Timer("atk")
 timer.start()
 // Import atk tools
-const validator = require("./tools/validator")
-const profiler = require("./tools/profiler")
+const Validator = require("./tools/validator").Validator
+const Profiler = require("./tools/profiler").Profiler
 const client = require("./tools/client")
 // Parse process.argv as "args" with minimist
 const args = minimist(process.argv.slice(2))
@@ -38,9 +38,9 @@ switch (args._[0]) {
       // mapdat = new validator.Validator(target)
       // console.log(JSON.stringify(mapdat.mapdata, null, 3))
       // timer.log("building validator")
-      let devValidator = new validator.Validator(target)
+      let devValidator = new Validator(target)
       // timer.log("building profiler")
-      let devProfiler = new profiler.Profiler(devValidator)
+      let devProfiler = new Profiler(devValidator)
       timer.end()
       // let toSvr = JSON.stringify({ val : devValidator, prof: devProfiler})
       // console.log(util.inspect(devProfiler, false, null, true /* enable colors */))
@@ -72,5 +72,7 @@ switch (args._[0]) {
 }
 
 module.exports = {
-   args: args._
+   args: args._,
+   Validator,
+   Profiler
 }
