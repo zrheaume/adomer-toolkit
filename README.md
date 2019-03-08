@@ -1,10 +1,10 @@
 __Warning : As of version 1.0.x this npm package is in development and should be used carefully__
 
-Some features may include bugs that can affect your project directory.
+_Some features may include bugs that can affect your project directory._
 
 __Important : Usage of adomer-toolkit requires an account with adomer online__
 
-Go to https://adomer.herokuapp.com to sign up and view application diagnostics.
+_Go to https://adomer.herokuapp.com to sign up and view application diagnostics._
 
 # adomer-toolkit
 ### A lightweight analysis tool for create-react-app style applications
@@ -17,8 +17,8 @@ Accessing the atk CLI is as simple as globally installing the adomer-toolkit pac
 
 ```
 $ npm install -g adomer-toolkit
-// done
+_// done_
 
 $ atk login -u fooMan -p fooBar
-// atk client configuration successful
+_// atk client configuration successful_
 ```
