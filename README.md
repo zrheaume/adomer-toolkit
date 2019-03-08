@@ -2,10 +2,6 @@ __Warning : As of version 1.0.x this npm package is in development and should be
 
 _Some features may include bugs that can affect your project directory._
 
-__Important : Usage of adomer-toolkit requires an account with adomer online__
-
-_Go to https://adomer.herokuapp.com to sign up and view application diagnostics._
-
 # adomer-toolkit
 ### A lightweight analysis tool for create-react-app style applications
 
