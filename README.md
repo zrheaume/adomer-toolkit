@@ -19,8 +19,8 @@ Accessing the atk CLI is as simple as globally installing the adomer-toolkit pac
 $ npm install -g adomer-toolkit
 
 $ atk login -u fooMan -p fooBar
-   or
-$ atk login -username fooMan -password fooBar
+[[ optionally ]]
+[[ $ atk login -username fooMan -password fooBar ]]
 ```
 
 
