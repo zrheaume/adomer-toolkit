@@ -4,10 +4,10 @@ class Timer {
    constructor(label, color="magenta") {
       this.start = (msg = `starting ${label}`) => {
          console.time(label)
-         console.log(chalk.green.bold(msg))
+         console.log(chalk.blue.bold(msg))
       }
       this.end = (msg = "Done.") => {
-         console.log(chalk.bold("Process completed with no issues."))
+         console.log(chalk.green.bold(`${label} completed with no issues.`))
          console.timeEnd(label)
          console.log(chalk.green.bold(msg))
       }

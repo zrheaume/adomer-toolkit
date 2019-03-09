@@ -10,6 +10,8 @@ timer.start()
 const Validator = require("./tools/validator").Validator
 const Profiler = require("./tools/profiler").Profiler
 const client = require("./tools/client")
+
+const chalk = require("chalk")
 // Parse process.argv as "args" with minimist
 const args = minimist(process.argv.slice(2))
 // Define `target` -> main execution arg of command
@@ -64,6 +66,7 @@ switch (args._[0]) {
       if (args.a || args.app) {
          client.hook(target, args.a || args.app).then(status => {
             if (status === "ok!") {
+               console.log(chalk.bold.green(`Success! ${args.a || args.app} was added to your adomer online account.`))
                timer.end()
             }
          })

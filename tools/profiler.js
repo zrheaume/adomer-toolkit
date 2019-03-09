@@ -148,11 +148,25 @@ class Profiler {
    getStats() {
       let theStats = {
          ΣSt: 0,
+         // ^ Total stateful
          ΣSl: 0,
+         // ^ Total stateless
          ΣFu: 0,
+         // ^ Total function-defined
          ΣCl: 0,
+         // ^ Total class-defined
+         ΣEfl : 0,
+         // ^ Total effectful
+         ΣEfs : 0,
+         // ^ Total effectless
+         ΣMon : 0,
+         // ^ Total monitored
+         ΣCuH : 0,
+         // ^ Total num hooks
          μStSl: 0.00,
+         // ^ Ratio stateful/stateless
          μFuCl: 0.00
+         // ^ Ratio functionDef/classDef
       }
       // console.log()
       for (let q = 0; q < this.types.length; q++) {
@@ -169,6 +183,22 @@ class Profiler {
             theStats.ΣSt++
          } else {
             theStats.ΣSl++
+         }
+
+         if (/componentdidmount/gmi.test(theComp)) {
+            theStats.ΣEfl ++
+         } else if (/useffect/gmi.test(theComp)) {
+            theStats.ΣEfl ++
+         } else {
+            theStats.ΣEfs ++
+         }
+
+         if (/use[a-z]+/gmi.test(theComp)) {
+            
+         }
+
+         if ((/componentdid/gmi.test(theComp) || /componentwill/gmi.test(theComp) || /componentshould/gmi.test(theComp)) && !/componentdidmount/gmi.test(theComp)) {
+            theStats.ΣMon ++
          }
       }
 
