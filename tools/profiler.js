@@ -193,8 +193,8 @@ class Profiler {
             theStats.ΣEfs ++
          }
 
-         if (/use[a-z]+/gmi.test(theComp)) {
-            
+         if (/use[A-Z][a-z]+/gmi.test(theComp)) {
+         theStats.ΣCuH++
          }
 
          if ((/componentdid/gmi.test(theComp) || /componentwill/gmi.test(theComp) || /componentshould/gmi.test(theComp)) && !/componentdidmount/gmi.test(theComp)) {
