@@ -1,7 +1,7 @@
 const fs = require("fs")
 const chalk = require("chalk")
 class Timer {
-   constructor(label, color="magenta") {
+   constructor(label, color = "magenta") {
       this.start = (msg = `starting ${label}`) => {
          console.time(label)
          console.log(chalk.blue.bold(msg))
@@ -16,25 +16,41 @@ class Timer {
       }
    }
 }
+const isIgnoredFileType = filename => {
+   const ignoredExtentsions = [".md", ".txt", ".lock", ".json"]
+   let shouldIgnore = null
+   for (let b = 0; b < ignoredExtentsions.length; b++) {
+      if (String(filename).endsWith(ignoredExtentsions[b])) {
+         if (b === ignoredExtentsions.indexOf(".json") && String(filename).includes("package")) {
+            return false
+         } else {
+            return true
+         }
+      } else {
+         shouldIgnore = false
+      }
+   }
+   return shouldIgnore
+}
 module.exports = {
-   err : str=> console.error(chalk.white.bgRed("atkERR: " + str)),
+   err: str => console.error(chalk.white.bgRed("atkERR: " + str)),
    isPathlike: str => /(.*\/)*/g.test(str),
    isScript: str => /.*\.js/.test(str),
    isFunctionComponent: str => /.*function.*\(.*props.*\).*{/gi.test(str),
    isClassComponent: str => /.*class\s+([A-Za-z]+)\s+extends/gi.test(str),
-   ignore: file => {
-      const toIgnore = ["node_modules", "build", ".ds_store", ".git", ".md", ".txt"]
-      for (let q = 0; q < toIgnore.length; q++){
-         if (toIgnore.indexOf(file) !== -1) {
-            console.log(file + "     DONT DO IT CAPTAIN")
+   ignore: filename => {
+      const ignoredFilenames = ["node_modules", "build", ".gitignore", ".DS_Store", ".git"]
+      let shouldIgnore = null
+      for (let q = 0; q < ignoredFilenames.length; q++) {
+         if (ignoredFilenames.indexOf(filename) !== -1) {
             return true
-         } else if (new RegExp(`.*${toIgnore[q]}`, "gi").test(file)) {
-            console.log(file + "     DONT DO IT CAPTAIN")
+         } else if (isIgnoredFileType(filename)) {
             return true
          } else {
-            return false
+            shouldIgnore = false
          }
       }
+      return shouldIgnore
    },
    reduceWhiteSpace: function (str) {
       return str.replace(/\s+/g, ' ');
@@ -83,6 +99,6 @@ module.exports = {
          }
       })
    },
-   Timer : Timer
+   Timer: Timer
 
 }

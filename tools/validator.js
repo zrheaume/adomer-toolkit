@@ -48,9 +48,6 @@ class Validator {
          if (next !== null) {
             for (let f = 0; f < next.length; f++) {
                contains[next[f]] = !utils.ignore(next[f]) ? this.snoopDir(`${pathLike}/${next[f]}`) : "NOMAP"
-               if (contains[next[f]] === "NOMAP") {
-                  // contains = "NOMAP"
-               }
                // contains[next[f]] = (next[f] !== 'node_modules' && next[f] !== '.git' && next[f] !== 'build' && next[f] !== ".DS_Store") ? this.snoopDir(`${pathLike}/${next[f]}`) : "unmapped dir/file"
             }
          } else if (next === null && !isDir) {

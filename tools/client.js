@@ -28,7 +28,6 @@ const getServiceID = function (creds) {
          return reject(err)
       }
    })
-   // console.log(creds)
 }
 const hook = function (appDir, appName) {
    return new Promise(async function (resolve, reject) {
@@ -46,7 +45,22 @@ const hook = function (appDir, appName) {
          }).catch(err => {
             utils.err("ServiceErr  !   Could not hook application\n" + err)
          })
-
+      } catch (err) {
+         return reject(err)
+      }
+   })
+}
+const reel = function (appName) {
+   return new Promise(async function (resolve, reject) {
+      try {
+         let cred = await utils.getClientCred()
+         const toSvr = {
+            name: appName,
+            cred: cred
+         }
+         axios.get(`https://adomer.herokuapp.com/api/apps/${toSvr.name}`, null, {headers: { cred: toSvr.cred}}).then(res => {
+            return resolve(res.data)
+         })
       } catch (err) {
          return reject(err)
       }
