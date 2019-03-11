@@ -2,10 +2,12 @@
 const utils = require("./utils")
 const timer = new utils.Timer("profiler")
 
-// Require dependencies
+// Require 3rd party dependencies
 const fs = require("fs")
 const chalk = require("chalk")
 
+//Require validator
+const Validator = require("./validator").Validator
 // Require extractor
 const ext = require("./extractor")
 // Require mapper
@@ -15,6 +17,9 @@ class Profiler {
    constructor(validator) {
       timer.start()
       try {
+         if (typeof validator === "string") {
+            validator = new Validator(validator)
+         }
          timer.log("Flattening the hierarchy")
          this._flat = this.makeFlat(validator)
          this.types = []
@@ -155,13 +160,13 @@ class Profiler {
          // ^ Total function-defined
          ΣCl: 0,
          // ^ Total class-defined
-         ΣEfl : 0,
+         ΣEfl: 0,
          // ^ Total effectful
-         ΣEfs : 0,
+         ΣEfs: 0,
          // ^ Total effectless
-         ΣMon : 0,
+         ΣMon: 0,
          // ^ Total monitored
-         ΣCuH : 0,
+         ΣCuH: 0,
          // ^ Total num hooks
          μStSl: 0.00,
          // ^ Ratio stateful/stateless
@@ -185,20 +190,20 @@ class Profiler {
             theStats.ΣSl++
          }
 
-         if (/componentdidmount/gmi.test(theComp)) {
-            theStats.ΣEfl ++
+         if (/.*componentdidmount.*/gmi.test(theComp)) {
+            theStats.ΣEfl++
          } else if (/useffect/gmi.test(theComp)) {
-            theStats.ΣEfl ++
+            theStats.ΣEfl++
          } else {
-            theStats.ΣEfs ++
+            theStats.ΣEfs++
          }
 
-         if (/use[A-Z][a-z]+/gmi.test(theComp)) {
-         theStats.ΣCuH++
+         if (/use([A-Z][a-z]+).*/gmi.test(theComp)) {
+            theStats.ΣCuH++
          }
 
          if ((/componentdid/gmi.test(theComp) || /componentwill/gmi.test(theComp) || /componentshould/gmi.test(theComp)) && !/componentdidmount/gmi.test(theComp)) {
-            theStats.ΣMon ++
+            theStats.ΣMon++
          }
       }
 

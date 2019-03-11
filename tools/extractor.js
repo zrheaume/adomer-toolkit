@@ -106,11 +106,8 @@ module.exports = {
             }
          }
 
-         // console.log(grabStat.content)
          grabStat.content = grabStat.content.join("\n")
-         // grabStat.content = grabStat.content.replace(new RegExp(`(${grabStat.name})`, "gmi"), `%%${grabStat.name}%%${grabStat.CID}%%`)
-         // console.log(chalk.green.bgWhite(JSON.stringify(grabStat.start)))
-         // console.log(chalk.magenta(grabStat.content))
+
          extracted.push(grabStat)
       }
       return (extracted)

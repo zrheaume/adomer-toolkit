@@ -40,19 +40,20 @@ class Validator {
          (/^.*\/src$/.test(pathLike)) ? (this.setPath("src", pathLike)) : (null);
          (/.*\/src\/index\.js/.test(pathLike)) ? (this.setPath("poe", pathLike)) : (null);
 
-         // If next is not null, we want to instantiate a new ATKsnoop
+         // If next is not null, we want to (potentially) instantiate a new ATKsnoop
          // class on each element of the array of files
          let contains = {}
          let flags = {}
          let pathTo = pathLike
          if (next !== null) {
             for (let f = 0; f < next.length; f++) {
-               //TODO: paramaterize
-               contains[next[f]] = (next[f] !== 'node_modules' && next[f] !== '.git' && next[f] !== 'build' && next[f] !== ".DS_Store") ? this.snoopDir(`${pathLike}/${next[f]}`) : "unmapped dir/file"
+               contains[next[f]] = !utils.ignore(next[f]) ? this.snoopDir(`${pathLike}/${next[f]}`) : "NOMAP"
+               if (contains[next[f]] === "NOMAP") {
+                  // contains = "NOMAP"
+               }
+               // contains[next[f]] = (next[f] !== 'node_modules' && next[f] !== '.git' && next[f] !== 'build' && next[f] !== ".DS_Store") ? this.snoopDir(`${pathLike}/${next[f]}`) : "unmapped dir/file"
             }
          } else if (next === null && !isDir) {
-            // console.clear()
-            // console.log(`Reading ${pathLike} for keywords`)
             let fileContents = fs.readFileSync(pathLike, { encoding: "utf8" })
             flags = {
                react: utils.includes.React(fileContents),
@@ -60,7 +61,7 @@ class Validator {
                listener_HTTP: utils.includes.HTTPlistener(fileContents)
             }
             contains = null
-            // console.log(`${pathLike} : ${flags}`)
+
          } else {
             throw Error
          }

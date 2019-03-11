@@ -22,6 +22,20 @@ module.exports = {
    isScript: str => /.*\.js/.test(str),
    isFunctionComponent: str => /.*function.*\(.*props.*\).*{/gi.test(str),
    isClassComponent: str => /.*class\s+([A-Za-z]+)\s+extends/gi.test(str),
+   ignore: file => {
+      const toIgnore = ["node_modules", "build", ".ds_store", ".git", ".md", ".txt"]
+      for (let q = 0; q < toIgnore.length; q++){
+         if (toIgnore.indexOf(file) !== -1) {
+            console.log(file + "     DONT DO IT CAPTAIN")
+            return true
+         } else if (new RegExp(`.*${toIgnore[q]}`, "gi").test(file)) {
+            console.log(file + "     DONT DO IT CAPTAIN")
+            return true
+         } else {
+            return false
+         }
+      }
+   },
    reduceWhiteSpace: function (str) {
       return str.replace(/\s+/g, ' ');
    },
