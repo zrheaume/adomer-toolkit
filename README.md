@@ -43,3 +43,8 @@ To add an application, use the __atk hook__ command.
 ```
 
 This calls atk's hook method which runs a series of analyses which extract components and create a profile of the application. Once this is complete, the resultant object is transmitted to adomer online's api, and it is added to your account. Now, you can go to the adomer home page to view a quantitative breakdown of your application, as well as an interactive map of your application.
+
+__UPCOMING Features__
+1.0.22 - Reel capability, update previously hooked apps
+
+1.1.x monorepo mapping with support for MERN stacks

@@ -88,6 +88,11 @@ switch (args._[0]) {
       }
       break
    case "reel":
+      if (args.a || args.app) {
+         client.reel( args.a || args.app)
+      } else {
+         utils.err("atkERR: `reel` requires an arg (-app || -a) <appName>")
+      }
       break
    default:
       break

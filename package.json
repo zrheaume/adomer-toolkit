@@ -26,5 +26,8 @@
     "minimist": "^1.2.0",
     "axios": "^0.18.0",
     "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "react-dom": "^16.8.4"
   }
 }

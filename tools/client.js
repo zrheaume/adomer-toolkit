@@ -58,7 +58,8 @@ const reel = function (appName) {
             name: appName,
             cred: cred
          }
-         axios.get(`https://adomer.herokuapp.com/api/apps/${toSvr.name}`, null, {headers: { cred: toSvr.cred}}).then(res => {
+         axios.get(`https://adomer.herokuapp.com/api/apps/reel/${toSvr.name}`,  {headers: { cred: toSvr.cred}}).then(res => {
+            console.log(res.data)
             return resolve(res.data)
          })
       } catch (err) {
@@ -69,5 +70,6 @@ const reel = function (appName) {
 
 module.exports = {
    getServiceID,
-   hook
+   hook,
+   reel
 }
