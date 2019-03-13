@@ -1,11 +1,7 @@
-// DEV FT Start process timer
 // Import minimist (CLI parser)
 const minimist = require('minimist')
 // Import utils
 const utils = require("./tools/utils/index")
-// DEV Declare process Timer and start it.
-let timer = new utils.Timer("atk")
-timer.start()
 // Import atk tools
 const Validator = require("./tools/validator").Validator
 const Profiler = require("./tools/profiler").Profiler
@@ -15,7 +11,15 @@ const devUtil = require("util")
 
 const chalk = require("chalk")
 // Parse process.argv as "args" with minimist
-const args = minimist(process.argv.slice(2))
+const args = minimist(process.argv.slice(2), { boolean: true })
+// Set some default paramaters
+if (args.verbose === true) {
+   args.verbose = true
+} else {
+   args.verbose = false
+}
+
+
 // Define `target` -> main execution arg of command
 let target
 // Run switch on `verb` [[first arg]]
@@ -31,7 +35,6 @@ switch (args._[0]) {
          }
          client.getServiceID(creds).then(status => {
             if (status === 1) {
-               timer.end()
             } else {
                utils.err("Something went wrong.")
             }
@@ -40,25 +43,7 @@ switch (args._[0]) {
          utils.err("login command requires args : (-u || -username) && (-p || -password)")
       }
       break
-   case "test":
-      break
-   // case "?":
-   //    target = (utils.isPathlike(args._[1]) ? (args._[1] ? args._[1] : process.cwd()) : process.cwd())
-   //    // console.log(utils.isPathlike(args._[1]))
-   //    // mapdat = new validator.Validator(target)
-   //    // console.log(JSON.stringify(mapdat.mapdata, null, 3))
-   //    // timer.log("building validator")
-   //    let devValidator = new Validator(target)
-   //    // timer.log("building profiler")
-   //    let devProfiler = new Profiler(devValidator)
-   //    timer.end()
-   //    // let toSvr = JSON.stringify({ val : devValidator, prof: devProfiler})
-   //    // console.log(util.inspect(devProfiler, false, null, true /* enable colors */))
-   //    // console.log(util.inspect(devValidator, false, null, true /* enable colors */))
-   //    // console.log(toSvr)
-   //    break
    case "dev":
-      // console.log(args.c)
       if (args.c) {
          utils.getClientCred().then(cred => "TODO: add validator").catch(err => { throw err })
       }
@@ -77,10 +62,9 @@ switch (args._[0]) {
    case "hook":
       target = (utils.isPathlike(args._[1]) ? (args._[1] ? args._[1] : process.cwd()) : process.cwd())
       if (args.a || args.app) {
-         client.hook(target, args.a || args.app).then(status => {
+         client.hook(target, (args.a || args.app), { verbose: args.verbose }).then(status => {
             if (status === "ok!") {
                console.log(chalk.bold.green(`Success! ${args.a || args.app} was added to your adomer online account.`))
-               timer.end()
             }
          })
       } else {
@@ -89,7 +73,7 @@ switch (args._[0]) {
       break
    case "reel":
       if (args.a || args.app) {
-         client.reel( args.a || args.app)
+         client.reel(args.a || args.app)
       } else {
          utils.err("atkERR: `reel` requires an arg (-app || -a) <appName>")
       }

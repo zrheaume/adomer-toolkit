@@ -1,11 +1,8 @@
 // Require atk utils
 const utils = require("./utils")
-const timer = new utils.Timer("profiler")
-
 // Require 3rd party dependencies
 const fs = require("fs")
 const chalk = require("chalk")
-
 //Require validator
 const Validator = require("./validator").Validator
 // Require extractor
@@ -14,27 +11,25 @@ const ext = require("./extractor")
 const mapper = require("./mapper")
 
 class Profiler {
-   constructor(validator) {
-      timer.start()
+   constructor(validator, options ) {
       try {
-         if (typeof validator === "string") {
-            validator = new Validator(validator)
-         }
-         timer.log("Flattening the hierarchy")
+         this.timer = new utils.Timer("profiler", options.verbose )
+         this.timer.start()
+         this.timer.log("Flattening the hierarchy")
+         this._src = validator.pathTo.self
          this._flat = this.makeFlat(validator)
          this.types = []
-         timer.log("Dehumanizing application")
+         this.timer.log("Dehumanizing application")
          this.extracted = this.findComponents(this.aggregateFlags())
-         timer.log("Trying to look smart")
+         this.timer.log("Trying to look smart")
          this.stats = this.getStats()
-         timer.log("Practicing cartography")
-         this.tree = new mapper.Tree(this.extracted, validator.pathTo.poe)
-         timer.end("Ready to transfer.")
+         this.timer.log("Practicing cartography")
+         this.tree = new mapper.Tree(this.extracted, validator.pathTo.poe, options)
+         this.timer.end("Ready to transfer.")
       } catch (err) {
          utils.err(err)
       }
    }
-
    // Instantiating this Profiler class on an instance of the Validator class
    // allows us to profile the directory. Step one - flatten the validator tree
    // to create a single-layer array that we can iterate over
@@ -43,7 +38,6 @@ class Profiler {
       let _flat = []
       // Take the "nest" - nested Validator object - and pull out the mapdata obj.
       let mapdata = nest.mapdata
-
       // flatten function
       function flatten(obj) {
          // If the object describes a directory, we have to to go down a level and either
@@ -56,19 +50,12 @@ class Profiler {
                let someKey = childKeys[q]
                let someItem = obj.contains[someKey]
                if (someItem.isDir && someItem.contains !== null) {
-                  // console.clear()
-                  // console.log("flattening subdir")
                   flatten(someItem)
                } else if (!someItem.isDir && someItem.contains === null) {
-                  // console.clear()
-                  // console.log("branch ended. pushing.")
                   _flat.push([someKey, someItem])
                }
             }
-            // console.log(`${childKeys[0]} : ${obj.contains[childKeys[0]]}`)
          } else {
-            // console.clear()
-            // console.log("not dir. Should push.")
             _flat.push(obj)
 
          }
@@ -99,7 +86,6 @@ class Profiler {
       try {
          // console.log(flags.react.length)
          for (let q = 0; q < flags.react.length; q++) {
-
             // for (let q = 0; q < 2; q++){
             let fileInfo = flags.react[q]
             let fileName = fileInfo[0]
@@ -112,31 +98,22 @@ class Profiler {
                         func: [],
                         class: []
                      }
-                     // console.log(data.length)
                      let lineArr = data.split("\n")
-                     // console.log(fileArr.length)
                      for (let l = 0; l < lineArr.length; l++) {
                         let target = null
                         let line = lineArr[l]
                         if (utils.isFunctionComponent(line)) {
                            components.func.push(l)
-                           // console.log(chalk.blue.bgWhite(`${l} -> ${line}`))
                         } else if (utils.isClassComponent(line)) {
                            components.class.push(l)
-                           // console.log(chalk.red.bgWhite(`${l} -> ${line}`))
                         }
                      }
-                     // console.log(components)
-                     // console.log(ext.grab(components, lineArr))
                      this.types.push(components)
                      let extractor = ext.grab(components, lineArr, fileMeta.pathTo)
                      for (let u = 0; u < extractor.length; u++) {
                         let item = extractor[u]
                         grab.push(item)
                      }
-                     // console.log(grab)
-                     // console.log(extractor)
-                     // this.extracted.push({extractor})
                   }
                }
             } else {
@@ -197,8 +174,7 @@ class Profiler {
          } else {
             theStats.ΣEfs++
          }
-
-         if (/use([A-Z][a-z]+).*/gmi.test(theComp)) {
+         if (/use([a-z_]).*/gmi.test(theComp)) {
             theStats.ΣCuH++
          }
 
@@ -206,19 +182,14 @@ class Profiler {
             theStats.ΣMon++
          }
       }
-
-
       if (theStats.ΣFu > 0 && theStats.ΣCl > 0) {
          theStats.μFuCl = theStats.ΣFu / theStats.ΣCl
       } else if (theStats.ΣFu > 0 && theStats.ΣCl === 0) {
          theStats.μFuCl = "all"
       }
-
       if (theStats.ΣSt > 0 && theStats.ΣSl > 0) {
          theStats.μStSl = theStats.ΣSt / theStats.ΣSl
       }
-
-      // console.log(chalk.yellow.bold.bgBlue(JSON.stringify(theStats)))
       return theStats
    }
 }
