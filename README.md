@@ -13,7 +13,7 @@ The atk CLI is the primary feature of the adomer toolkit, and it provides featur
 ### Getting Started
 Accessing the atk CLI is as simple as globally installing the adomer-toolkit package. If you don't already have an account with [adomer online](https://adomer.herokuapp.com/), you'll need to make one.
 
-```
+```console
 $ npm install -g adomer-toolkit
 
 $ atk login -u fooMan -p fooBar
