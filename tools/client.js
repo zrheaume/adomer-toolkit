@@ -29,10 +29,10 @@ const getServiceID = function (creds) {
       }
    })
 }
-const hook = function (appDir, appName) {
+const hook = function (appDir, appName, options) {
    return new Promise(async function (resolve, reject) {
       try {
-         let profiler = new Profiler(new Validator(appDir))
+         let profiler = new Profiler(new Validator(appDir, options), options)
          let cred = await utils.getClientCred()
          const toSvr = {
             name: appName,

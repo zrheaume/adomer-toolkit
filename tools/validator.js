@@ -3,12 +3,11 @@ const fs = require("fs")
 const path = require("path")
 const utils = require("./utils")
 
-const timer = new utils.Timer("validator")
-
 
 class Validator {
-   constructor(appDir) {
-      timer.start()
+   constructor(appDir, options) {
+      this.timer = new utils.Timer("validator", options.verbose)
+      this.timer.start()
       this.appDir = appDir
       this.pathTo = {
          self: this.appDir
@@ -18,10 +17,10 @@ class Validator {
          is: { "react-enabled": null },
          has: {}
       }
-      timer.log("Propogating nosiness")
+      this.timer.log("Propogating nosiness")
       this.mapdata = this.snoopDir(appDir)
       this.determineAppValidity()
-      timer.end("done.")
+      this.timer.end("done.")
    }
 
    snoopDir(pathLike) {

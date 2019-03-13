@@ -1,18 +1,30 @@
 const fs = require("fs")
 const chalk = require("chalk")
 class Timer {
-   constructor(label, color = "magenta") {
+   constructor(label, verbose, color = "magenta") {
       this.start = (msg = `starting ${label}`) => {
-         // console.time(label)
-         // console.log(chalk.blue.bold(msg))
+         if (verbose === true) {
+            console.time(label)
+            console.log(chalk.blue.bold(msg))
+         } else {
+            return true
+         }
       }
       this.end = (msg = "Done.") => {
-         // console.log(chalk.green.bold(`${label} completed with no issues.`))
-         // console.timeEnd(label)
-         // console.log(chalk.green.bold(msg))
+         if (verbose === true) {
+            console.log(chalk.green.bold(`${label} completed with no issues.`))
+            console.timeEnd(label)
+            console.log(chalk.green.bold(msg))
+         } else {
+            return true
+         }
       }
       this.log = (msg) => {
-         // console.timeLog(label, chalk[color].bold(msg))
+         if (verbose === true) {
+            console.timeLog(label, chalk[color].bold(msg))
+         } else {
+            return true
+         }
       }
    }
 }
@@ -33,7 +45,7 @@ const isIgnoredFileType = filename => {
    return shouldIgnore
 }
 module.exports = {
-   err: str => console.error(chalk.white.bgRed("atkERR: " + str)),
+   err: str => console.error(chalk.white.bgRed(`"atkERR: " + ${str} + ${ str.stack ? str.stack : "" }`)),
    isPathlike: str => /(.*\/)*/g.test(str),
    isScript: str => /.*\.js/.test(str),
    isFunctionComponent: str => /.*function.*\(.*props.*\).*{/gi.test(str),

@@ -1,5 +1,5 @@
 const utils = require("./utils")
-const timer = new utils.Timer("mapper")
+
 
 
 const fs = require("fs")
@@ -82,9 +82,10 @@ const findChildren = (parent, usrDef) => {
 }
 
 class Tree {
-   constructor(extracted, origin) {
-      timer.start()
-      timer.log("Planting seeds")
+   constructor(extracted, origin, options) {
+      this.timer = new utils.Timer("mapper", options.verbose)
+      this.timer.start()
+      this.timer.log("Planting seeds")
       this.origin = origin
       this.list = extracted
       this.names = this.list.map((item, n) => {
@@ -100,7 +101,7 @@ class Tree {
       // console.log(this.ids)
       this.root = this.names.indexOf(this.POE["render"]["component"])
       if (this.root !== -1) {
-         timer.log("Feeling treetops")
+         this.timer.log("Feeling treetops")
          this.trace(this.names[this.root])
       } else {
          utils.err("Root component is not a member of user defined components array")
