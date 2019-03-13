@@ -36,9 +36,12 @@ To add an application, use the __atk hook__ command.
 ```console
    $ cd ./projects/MyProject/
 
+   [[ cwd ]]
    $ atk hook -a "My Project"
-   # optionally
+   optionally
+   [[ path ]]
    $ atk hook ~/Documents/projects/MyProject/ -a "My Project"
+   
    $ Success! Scraper was added to your adomer online account.
    
    ...
