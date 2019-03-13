@@ -1,6 +1,5 @@
 // Require atk utils
 const utils = require("./utils")
-const timer = new utils.Timer("profiler")
 // Require 3rd party dependencies
 const fs = require("fs")
 const chalk = require("chalk")
@@ -12,23 +11,21 @@ const ext = require("./extractor")
 const mapper = require("./mapper")
 
 class Profiler {
-   constructor(validator) {
-      timer.start()
+   constructor(validator, options ) {
       try {
-         if (typeof validator === "string") {
-            validator = new Validator(validator)
-         }
-         timer.log("Flattening the hierarchy")
+         this.timer = new utils.Timer("profiler", options.verbose )
+         this.timer.start()
+         this.timer.log("Flattening the hierarchy")
          this._src = validator.pathTo.self
          this._flat = this.makeFlat(validator)
          this.types = []
-         timer.log("Dehumanizing application")
+         this.timer.log("Dehumanizing application")
          this.extracted = this.findComponents(this.aggregateFlags())
-         timer.log("Trying to look smart")
+         this.timer.log("Trying to look smart")
          this.stats = this.getStats()
-         timer.log("Practicing cartography")
-         this.tree = new mapper.Tree(this.extracted, validator.pathTo.poe)
-         timer.end("Ready to transfer.")
+         this.timer.log("Practicing cartography")
+         this.tree = new mapper.Tree(this.extracted, validator.pathTo.poe, options)
+         this.timer.end("Ready to transfer.")
       } catch (err) {
          utils.err(err)
       }
