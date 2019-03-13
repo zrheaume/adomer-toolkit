@@ -31,12 +31,12 @@ Adding applications to your adomer online account allows you to view their attri
 To add an application, use the __atk hook__ command.
 `atk hook` has a mandatory flag of `-a <applicationName>`, and optionally takes in a filepath. If no filepath is given, hook is run on the working directory from which it has been called.
 
-```
+```console
    $ cd ./projects/MyProject/
 
    $ atk hook -a "My Project"
-   [[ optionally ]]
-   [[ $ atk hook ~/Documents/projects/MyProject/ -a "My Project" ]]
+   #! optionally
+   #! $ atk hook ~/Documents/projects/MyProject/ -a "My Project"
 
    ...
    $ ok!
