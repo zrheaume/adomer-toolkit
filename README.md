@@ -17,8 +17,10 @@ Accessing the atk CLI is as simple as globally installing the adomer-toolkit pac
 $ npm install -g adomer-toolkit
 
 $ atk login -u fooMan -p fooBar
-[[ optionally ]]
-[[ $ atk login -username fooMan -password fooBar ]]
+optionally
+$ atk login -username fooMan -password fooBar
+
+$ atk: client configuration successful
 ```
 
 
@@ -35,9 +37,10 @@ To add an application, use the __atk hook__ command.
    $ cd ./projects/MyProject/
 
    $ atk hook -a "My Project"
-   #! optionally
-   #! $ atk hook ~/Documents/projects/MyProject/ -a "My Project"
-
+   # optionally
+   $ atk hook ~/Documents/projects/MyProject/ -a "My Project"
+   $ Success! Scraper was added to your adomer online account.
+   
    ...
    $ ok!
 ```
