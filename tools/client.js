@@ -3,12 +3,12 @@ const utils = require("./utils")
 const chalk = require("chalk")
 const Profiler = require("./profiler").Profiler
 const Validator = require("./validator").Validator
+// Function to "login" to online account and obtain a service ID
 const getServiceID = function (creds) {
    return new Promise(function (resolve, reject) {
       try {
          axios.put("https://adomer.herokuapp.com/act/addClient", creds)
             .then((res) => {
-               // console.log(res.data)
                if (res.data) {
                   utils.writeClientConfig(res.data).then(status => {
                      if (status === 1) {
@@ -50,6 +50,24 @@ const hook = function (appDir, appName) {
       }
    })
 }
+
+const compareDiff = function (appData) {
+   console.log(appData)
+   if (appData.content._src) {
+      let priorVersion = appData.content
+      try {
+         let updatedProfiler = new Profiler(appData.content._src)
+         if (Object.keys(updatedProfiler).length === Object.keys(priorVersion).length) {
+            appData.content = JSON.stringify(updatedProfiler)
+            axios.put(`https://adomer.herokuapp.com/api/apps/reel/`)
+         }
+
+      } catch (err) {
+
+      }
+
+   }
+}
 const reel = function (appName) {
    return new Promise(async function (resolve, reject) {
       try {
@@ -58,15 +76,15 @@ const reel = function (appName) {
             name: appName,
             cred: cred
          }
-         axios.get(`https://adomer.herokuapp.com/api/apps/reel/${toSvr.name}`,  {headers: { cred: toSvr.cred}}).then(res => {
-            console.log(res.data)
-            return resolve(res.data)
+         axios.get(`https://adomer.herokuapp.com/api/apps/reel/${toSvr.name}`, { headers: { cred: toSvr.cred } }).then(res => {
+            compareDiff(res.data)
          })
       } catch (err) {
          return reject(err)
       }
    })
 }
+
 
 module.exports = {
    getServiceID,

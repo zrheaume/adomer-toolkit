@@ -3,16 +3,16 @@ const chalk = require("chalk")
 class Timer {
    constructor(label, color = "magenta") {
       this.start = (msg = `starting ${label}`) => {
-         console.time(label)
-         console.log(chalk.blue.bold(msg))
+         // console.time(label)
+         // console.log(chalk.blue.bold(msg))
       }
       this.end = (msg = "Done.") => {
-         console.log(chalk.green.bold(`${label} completed with no issues.`))
-         console.timeEnd(label)
-         console.log(chalk.green.bold(msg))
+         // console.log(chalk.green.bold(`${label} completed with no issues.`))
+         // console.timeEnd(label)
+         // console.log(chalk.green.bold(msg))
       }
       this.log = (msg) => {
-         console.timeLog(label, chalk[color].bold(msg))
+         // console.timeLog(label, chalk[color].bold(msg))
       }
    }
 }
