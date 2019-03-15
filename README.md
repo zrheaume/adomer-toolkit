@@ -31,15 +31,13 @@ If atk exits with `atk client configuration succesful`, you're set. Your local m
 Adding applications to your adomer online account allows you to view their attributes through adomer's tree rendering engine, and it's painfully simple.
 
 To add an application, use the __atk hook__ command.
-`atk hook` has a mandatory flag of `-a <applicationName>`, and optionally takes in a filepath. If no filepath is given, hook is run on the working directory from which it has been called.
+`atk hook` has a mandatory flag of `-a <applicationName>`, and optionally takes in a filepath. If no filepath is given, atk hook is run on the working directory from which it has been called. Optionally, add --verbose for process time logs.
 
 ```console
    $ cd ./projects/MyProject/
 
-   [[ cwd ]]
    $ atk hook -a "My Project"
    optionally
-   [[ path ]]
    $ atk hook ~/Documents/projects/MyProject/ -a "My Project"
    
    $ Success! Scraper was added to your adomer online account.
@@ -50,7 +48,18 @@ To add an application, use the __atk hook__ command.
 
 This calls atk's hook method which runs a series of analyses which extract components and create a profile of the application. Once this is complete, the resultant object is transmitted to adomer online's api, and it is added to your account. Now, you can go to the adomer home page to view a quantitative breakdown of your application, as well as an interactive map of your application.
 
+
+### Updating Applications
+When you add an application through the atk CLI, the local machine performs almost all of the analysis on the application, sending only the results to adomer. Because there is no direct storage of the entirety of your code, the atk CLI must run those processes again locally in order to update the statistics and visuals displayed by adomer online. To do this, use atk's `reel` command and flagging the name of the app you want to update with `-a`.
+
+```console
+   $ atk reel -a "Scraper"
+   ...
+   $ Success! Scraper was updated with 5 changes.
+```
+And now it's done!
+
+
 __UPCOMING Features__
-1.0.22 - Reel capability, update previously hooked apps
 
 1.1.x monorepo mapping with support for MERN stacks

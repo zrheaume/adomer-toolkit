@@ -11,9 +11,13 @@ const ext = require("./extractor")
 const mapper = require("./mapper")
 
 class Profiler {
-   constructor(validator, options ) {
+   constructor(validator, options) {
+      options = Object(options)
+      if (typeof validator === "string") {
+         validator = new Validator(validator, { verbose: options["verbose"] })
+      }
       try {
-         this.timer = new utils.Timer("profiler", options.verbose )
+         this.timer = new utils.Timer("profiler", options.verbose)
          this.timer.start()
          this.timer.log("Flattening the hierarchy")
          this._src = validator.pathTo.self
@@ -21,6 +25,7 @@ class Profiler {
          this.types = []
          this.timer.log("Dehumanizing application")
          this.extracted = this.findComponents(this.aggregateFlags())
+         this.expressed = this.findExpressItems(this.aggregateFlags())
          this.timer.log("Trying to look smart")
          this.stats = this.getStats()
          this.timer.log("Practicing cartography")
@@ -125,6 +130,32 @@ class Profiler {
       } finally {
          return grab
       }
+   }
+
+   findExpressItems(flags) {
+      // console.log(flags.express.length)
+      let grab = []
+      for (let j = 0; j < flags.express.length; j++) {
+         let expressItem = flags.express[j][1]
+         expressItem.name = flags.express[j][0]
+         if (expressItem.contains === null) {
+            let fileData = fs.readFileSync(expressItem.pathTo, { encoding: "utf8" })
+            expressItem.content = fileData.split("\n")
+            ext.grabExpress(expressItem)
+         }
+      }
+      // for (let j = 0; j < flags.http.length; j++) {
+      //    // console.log(flags.http[j][1])
+      //    let expressItem = flags.http[j][1]
+      //    if (expressItem.contains === null) {
+      //       let fileData = fs.readFileSync(expressItem.pathTo, { encoding: "utf8" })
+      //       expressItem.content = fileData.split("\n")
+      //       ext.grabExpress(expressItem)
+      //    }
+      // }
+
+      // console.log(grab)
+      return grab
    }
 
    getStats() {

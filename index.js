@@ -47,10 +47,10 @@ switch (args._[0]) {
       if (args.c) {
          utils.getClientCred().then(cred => "TODO: add validator").catch(err => { throw err })
       }
-      if (args.v && args._[1] && !args.s) {
-         console.log(devUtil.inspect(new Validator(args._[1]), false, null, true))
-      } else if (args.v && args._[1] && args.s) {
-         return new Validator(args._[1])
+      if (args.p && args._[1] && !args.s) {
+         console.log(devUtil.inspect(new Profiler(args._[1], { verbose: args.verbose }), false, null, true))
+      } else if (args.p && args._[1] && args.s) {
+         return new Profiler(args._[1], { verbose: args.verbose })
       } else if (args.v && !args._[1]) {
          console.log(utils.err("dev validator requires target directory"))
       }

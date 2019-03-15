@@ -4,6 +4,7 @@ const uuid = require("uuid/v4")
 const reduceWhiteSpace = function (str) {
    return str.replace(/\s+/g, ' ');
 }
+
 module.exports = {
    grab: (componentObj, lineArr, pathLike) => {
       // throw new Error(JSON.stringify(componentObj))
@@ -93,13 +94,13 @@ module.exports = {
                grabStat.content.push(theLine)
             } else {
                if (grabStat.open > 0) {
-                  if(grabStat.content.indexOf(theLine) === -1) { grabStat.content.push(theLine)}
+                  if (grabStat.content.indexOf(theLine) === -1) { grabStat.content.push(theLine) }
                   for (let c = 0; c < theLine.length; c++) {
                      let theChar = theLine[c]
                      if (theChar === "{") {
-                        grabStat.open ++
+                        grabStat.open++
                      } else if (theChar === "}" && grabStat.open > 1) {
-                        grabStat.open --
+                        grabStat.open--
                      }
                   }
                }
@@ -111,5 +112,36 @@ module.exports = {
          extracted.push(grabStat)
       }
       return (extracted)
+   },
+   grabExpress: (expressItemObj) => {
+      let lineArr = expressItemObj.content
+      let meta = {
+         modName: false,
+         instanceName: false
+      }
+      // console.log(expressItemObj.pathTo)
+      if (expressItemObj.content.length > 0) {
+         for (let u = 0; u < lineArr.length; u++){
+            let line = lineArr[u]
+            if (utils.importsExpressModule(line)) {
+               meta.modName = utils.importsExpressModule(line)[1]
+               // console.log(`Found express module [[${meta.modName}]] at line ${u}`)
+            }
+
+            if (meta.modName) {
+               if (line.includes(meta.modName)) {
+                  // console.log("actionable")
+                  // console.log(utils.establishesExpressInstance(line, meta.modName))
+               }
+               // console.log(`We have a module! It is.. ${meta.modName}`)
+            }
+            
+            
+            // else if (meta.modName && utils.establishesExpressInstance(line, meta.modName)) {
+            //    meta.instanceName = utils.establishesExpressInstance(line)[1]
+            //    console.log(`Found express instance [[${meta.instanceName}]]`)
+            // }
+         }
+      }
    }
 }

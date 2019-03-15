@@ -6,6 +6,7 @@ const utils = require("./utils")
 
 class Validator {
    constructor(appDir, options) {
+      options = Object(options)
       this.timer = new utils.Timer("validator", options.verbose)
       this.timer.start()
       this.appDir = appDir
