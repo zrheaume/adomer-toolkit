@@ -144,15 +144,7 @@ class Profiler {
             ext.grabExpress(expressItem)
          }
       }
-      // for (let j = 0; j < flags.http.length; j++) {
-      //    // console.log(flags.http[j][1])
-      //    let expressItem = flags.http[j][1]
-      //    if (expressItem.contains === null) {
-      //       let fileData = fs.readFileSync(expressItem.pathTo, { encoding: "utf8" })
-      //       expressItem.content = fileData.split("\n")
-      //       ext.grabExpress(expressItem)
-      //    }
-      // }
+
 
       // console.log(grab)
       return grab

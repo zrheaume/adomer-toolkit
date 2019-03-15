@@ -2,7 +2,7 @@
   "name": "adomer-toolkit",
   "version": "1.0.23",
   "description": "Adomer configuration toolkit",
-  "main": "index.js",
+  "main": "main`.js",
   "scripts": {
     "upPub": "npm uninstall -g adomer-toolkit && npm install -g adomer-toolkit",
     "upLoc": "npm uninstall -g adomer-toolkit && npm install -g .",
