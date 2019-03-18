@@ -51,7 +51,16 @@ module.exports = {
    isFunctionComponent: str => /.*function.*\(.*props.*\).*{/gi.test(str),
    isClassComponent: str => /.*class\s+([A-Za-z]+)\s+extends/gi.test(str),
    importsExpressModule: str => /\s*import\s+([A-Za-z]+?)\s+from\s+\"express\"/.exec(str),
-   establishesExpressInstance: (str, modName) => new RegExp(`${modName}\s*\((.*?)\)`, "gi").exec(str),
+   establishesExpressInstance: str => /\s*([a-zA-Z]+?)\s+([A-Za-z]+?)\s*=\s*express\s*\(.*\)/.exec(str),
+   addsMiddleware: (str, expInstance) => {
+      // If middleware is configured via express instance .use()
+      let patternUseStr = ()=> `${expInstance}\.use\((.*?)\)`
+      // If middleware is configured by calling a function on express instance
+      let patternFunStr = () => `(.*?)\(${expInstance}\)`
+      let patternUseReg = new RegExp(patternUseStr(), "gi")
+      let patternFunReg = new RegExp(patternFunStr(), "gi")
+      return (patternUseReg.exec(str) || patternFunReg.exec(str))
+   },
    ignore: filename => {
       const ignoredFilenames = ["node_modules", "build", ".gitignore", ".DS_Store", ".git"]
       let shouldIgnore = null

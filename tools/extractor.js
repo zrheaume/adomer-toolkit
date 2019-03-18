@@ -119,29 +119,35 @@ module.exports = {
          modName: false,
          instanceName: false
       }
-      // console.log(expressItemObj.pathTo)
+      console.log(expressItemObj.pathTo)
       if (expressItemObj.content.length > 0) {
-         for (let u = 0; u < lineArr.length; u++){
+         for (let u = 0; u < lineArr.length; u++) {
             let line = lineArr[u]
+            console.log(`${u} -> ${line}`)
             if (utils.importsExpressModule(line)) {
                meta.modName = utils.importsExpressModule(line)[1]
-               // console.log(`Found express module [[${meta.modName}]] at line ${u}`)
+               console.log(chalk.yellow(`Found express module [[${meta.modName}]] at line ${u}`))
+            }
+            if (meta.modName) {
+               if (utils.establishesExpressInstance(line)) {
+                  console.log(chalk.green("Found instance def"))
+                  meta.instanceName = utils.establishesExpressInstance(line)[2]
+                  // console.log(utils.establishesExpressInstance(line)[2])
+               }
+            }
+            if (meta.instanceName) {
+               if (utils.addsMiddleware(line, meta.instanceName)) {
+                  console.log(chalk.magenta("found middleware configuration"))
+               }
             }
 
-            if (meta.modName) {
-               if (line.includes(meta.modName)) {
-                  // console.log("actionable")
-                  // console.log(utils.establishesExpressInstance(line, meta.modName))
-               }
-               // console.log(`We have a module! It is.. ${meta.modName}`)
-            }
-            
-            
+
             // else if (meta.modName && utils.establishesExpressInstance(line, meta.modName)) {
             //    meta.instanceName = utils.establishesExpressInstance(line)[1]
             //    console.log(`Found express instance [[${meta.instanceName}]]`)
             // }
          }
       }
+      return meta
    }
 }

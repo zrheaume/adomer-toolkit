@@ -22,11 +22,22 @@ class Profiler {
          this.timer.log("Flattening the hierarchy")
          this._src = validator.pathTo.self
          this._flat = this.makeFlat(validator)
+         this.mapped = 0
+         // this.tag = (files = this._flat, mapped = this.mapped) => {
+         //    this.structure = {}
+         //    if (Array.isArray(files)) {
+         //       let file = files[mapped]
+         //       if (!utils.ignore(file[0])) {
+         //          let codeChunk = fs.readFileSync(file[1].pathTo, { encoding: "utf8" })
+         //       }
+         //    }
+         // }
+         // this.markup = this.tag()
          this.types = []
          this.timer.log("Dehumanizing application")
          this.extracted = this.findComponents(this.aggregateFlags())
-         this.expressed = this.findExpressItems(this.aggregateFlags())
-         this.timer.log("Trying to look smart")
+         // this.expressed = this.findExpressItems(this.aggregateFlags())
+         this.timer.log("Hold on.")
          this.stats = this.getStats()
          this.timer.log("Practicing cartography")
          this.tree = new mapper.Tree(this.extracted, validator.pathTo.poe, options)
@@ -132,23 +143,29 @@ class Profiler {
       }
    }
 
-   findExpressItems(flags) {
-      // console.log(flags.express.length)
-      let grab = []
-      for (let j = 0; j < flags.express.length; j++) {
-         let expressItem = flags.express[j][1]
-         expressItem.name = flags.express[j][0]
-         if (expressItem.contains === null) {
-            let fileData = fs.readFileSync(expressItem.pathTo, { encoding: "utf8" })
-            expressItem.content = fileData.split("\n")
-            ext.grabExpress(expressItem)
-         }
-      }
+   // findExpressItems(flags) {
+   //    let grab = []
+   //    let toRead = []
+   //    for (let h = 0; h < flags.express.length; h++){
+   //       toRead.push(flags.exprss[h])
+   //    }
+   //    for (let q = 0; q < flags.http.length; q++){
+   //       toRead.push(flags.http[q])
+   //    }
+   //    let extracted = {
+   //       count: 0,
+   //       instanceName: null,
+   //       endpoints: []
+   //    }
+   //    let run = (list, extracted) => {
+   //       let expressItem = list[extracted.count]
 
+   //       extracted.count++
+   //    }
 
-      // console.log(grab)
-      return grab
-   }
+   //    run(toRead, extracted)
+
+   // }
 
    getStats() {
       let theStats = {
